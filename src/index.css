@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --radius-DEFAULT: var(--radius);
+  --font-sans: 'Nunito', sans-serif;
+  --font-serif: 'Lora', serif;
+}
+
+:root {
+  --background: #F5F1EA;
+  --foreground: #3A3028;
+  --card: #EDE7DA;
+  --card-foreground: #3A3028;
+  --primary: #6BA5A0;
+  --primary-foreground: #FFFFFF;
+  --secondary: #B8C8E8;
+  --secondary-foreground: #2E3A5C;
+  --muted: #E4DDD2;
+  --muted-foreground: #7A6E63;
+  --accent: #C4B4D8;
+  --accent-foreground: #3A2E52;
+  --border: #D4CABC;
+  --ring: #8EAF86;
+  --radius: 1rem;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Nunito', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbar by default, show while scrolling */
+* {
+  scrollbar-width: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
