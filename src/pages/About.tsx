@@ -125,7 +125,7 @@ export default function About() {
         <div className="max-w-5xl mx-auto px-6 text-center">
           <h2 className="font-serif text-4xl font-semibold mb-4" style={{ color: 'var(--foreground)' }}>Our approach</h2>
           <p className="text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: 'var(--muted-foreground)' }}>
-            Every session at Serenova begins with listening. We believe healing is not something done to a body — it is something that happens within one, when conditions of safety, warmth, and intention are present.
+            Every session at Serenova begins with listening. We believe healing is not something done to a body — it is something that happens within, when conditions of safety, warmth, and intention are present.
           </p>
         </div>
       </section>

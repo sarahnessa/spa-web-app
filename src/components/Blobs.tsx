@@ -39,7 +39,7 @@ export function CloudShape({ className = '' }: { className?: string }) {
     <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
       <path
         d="M60,140 Q20,140,20,100 Q20,65,55,60 Q55,20,100,20 Q125,20,140,40 Q155,15,185,15 Q225,15,235,50 Q260,30,290,35 Q330,40,335,75 Q360,65,380,90 Q400,115,385,135 Q370,150,345,145 Q345,165,320,168 Q295,170,285,155 Q265,175,235,170 Q215,175,205,158 Q185,175,160,168 Q140,175,130,155 Q110,170,85,162 Q60,155,60,140Z"
-        fill="#c7dff0"
+        fill="#cde0ee"
         opacity="0.85"
       />
     </svg>
