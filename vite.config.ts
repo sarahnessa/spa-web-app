@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  //base: '/spa-web-app/',
+  base: '/spa-web-app/',
   plugins: [
     react(),
     tailwindcss()
