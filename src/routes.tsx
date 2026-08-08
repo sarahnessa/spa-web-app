@@ -16,6 +16,8 @@ export const router = createBrowserRouter([
       { path: 'booking', Component: Booking },
       { path: 'gallery', Component: Gallery },
       { path: 'contact', Component: Contact },
-    ],
+    ]
   },
-])
+], {
+    basename: '/spa-web-app'
+});
