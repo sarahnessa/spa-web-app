@@ -19,5 +19,5 @@ export const router = createBrowserRouter([
     ]
   },
 ], {
-    basename: '/spa-web-app'
+    basename: import.meta.env.BASE_URL.replace(/\/$/, '')
 });
