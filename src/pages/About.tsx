@@ -68,9 +68,9 @@ export default function About() {
   return (
     <>
       <Helmet>
-        <title>Home Page</title>
+        <title>Home | Serenova Spa</title>
         <meta name="description" content="Meet the team at Serenova Spa." />
-        <meta property="og:title" content="Serenova Spa - About Page" />
+        <meta property="og:title" content="Home | Serenova Spa" />
         <meta property="og:type" content="website" />
       </Helmet>
 

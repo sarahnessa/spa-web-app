@@ -167,12 +167,12 @@ export default function Booking() {
   return (
     <>
       <Helmet>
-        <title>My Awesome Vite Site</title>
+        <title>Booking | Serenova Spa</title>
         <meta
           name="description"
           content="Book a treatment with one of our practitioners."
         />
-        <meta property="og:title" content="Serenova Spa - Booking Page" />
+        <meta property="og:title" content="Booking | Serenova Spa" />
         <meta property="og:type" content="website" />
       </Helmet>
 

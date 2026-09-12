@@ -23,12 +23,12 @@ export default function Contact() {
   return (
     <>
       <Helmet>
-        <title>Home Page</title>
+        <title>Contact | Serenova Spa</title>
         <meta
           name="description"
           content="Contact information, map & directions, and send us a message."
         />
-        <meta property="og:title" content="Serenova Spa - Contact Page" />
+        <meta property="og:title" content="Contact | Serenova Spa" />
         <meta property="og:type" content="website" />
       </Helmet>
 

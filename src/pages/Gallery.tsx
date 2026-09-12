@@ -99,12 +99,12 @@ export default function Gallery() {
   return (
     <>
       <Helmet>
-        <title>Gallery Page</title>
+        <title>Gallery | Serenova Spa</title>
         <meta
           name="description"
           content="Serenova Spa - Gallery of images showcasing our spaces, treatments, botanicals we use, meditation garden and other outdoor natural elements."
         />
-        <meta property="og:title" content="Serenova Spa - Gallery Page" />
+        <meta property="og:title" content="Gallery | Serenova Spa" />
         <meta property="og:type" content="website" />
       </Helmet>
 

@@ -300,9 +300,9 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Home Page</title>
+        <title>Home | Serenova Spa</title>
         <meta name="description" content="Serenova Spa - Fall into Stillness" />
-        <meta property="og:title" content="Serenova Spa - Home Page " />
+        <meta property="og:title" content="Home | Serenova Spa" />
         <meta property="og:type" content="website" />
       </Helmet>
 
