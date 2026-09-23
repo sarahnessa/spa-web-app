@@ -53,3 +53,51 @@ body {
 *::-webkit-scrollbar {
   display: none;
 }
+
+.tiptap-content .tiptap {
+  min-height: 220px;
+  outline: none;
+  color: #51463b;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.tiptap-content .tiptap h2 {
+  margin: 0 0 0.8rem;
+  color: #3a3028;
+  font-family: 'Lora', serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.tiptap-content .tiptap p {
+  margin: 0 0 0.85rem;
+}
+
+.tiptap-content .tiptap ul,
+.tiptap-content .tiptap ol {
+  margin: 0.65rem 0 1rem;
+  padding-left: 1.4rem;
+}
+
+.tiptap-content .tiptap ul {
+  list-style: disc;
+}
+
+.tiptap-content .tiptap ol {
+  list-style: decimal;
+}
+
+.tiptap-content .tiptap li::marker {
+  color: #6ba5a0;
+}
+
+.tiptap-content .tiptap strong {
+  color: #3a3028;
+  font-weight: 700;
+}
+
+.tiptap-content .tiptap em {
+  color: #7a6e63;
+}

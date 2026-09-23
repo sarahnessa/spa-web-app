@@ -5,8 +5,10 @@ import About from './pages/About'
 import Booking from './pages/Booking'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
+import Admin from './pages/Admin'
 
 export const router = createBrowserRouter([
+  { path: '/admin', Component: Admin },
   {
     path: '/',
     Component: Layout,
