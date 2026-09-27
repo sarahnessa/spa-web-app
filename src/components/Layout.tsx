@@ -111,6 +111,18 @@ export default function Layout() {
               <div>Saturday: 9am – 5pm</div>
               <div>Sunday: 10am – 4pm</div>
             </div>
+            <div className="mt-5">
+              <div className="font-semibold text-sm tracking-widest uppercase mb-2" style={{ color: 'var(--muted-foreground)' }}>Address</div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=44.483303%2C-124.082885"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm underline underline-offset-2"
+                style={{ color: 'var(--foreground)' }}
+              >
+                End of NW Quail St<br/>Seal Rock, OR
+              </a>
+            </div>
           </div>
         </div>
         <div className="text-center py-4 text-xs" style={{ color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)' }}>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { BlobGreen, BlobLilac } from "../components/Blobs";
 import { IconMeditation } from "./Home";
@@ -7,61 +8,101 @@ const services = [
   {
     id: "herbal-wrap",
     name: "Herbal Body Wrap",
-    duration: "90 min",
+    duration: 90,
     price: "$140",
   },
   {
     id: "hot-stone",
     name: "Hot Stone Therapy",
-    duration: "75 min",
+    duration: 75,
     price: "$125",
   },
   {
     id: "botanical-facial",
     name: "Botanical Facial",
-    duration: "60 min",
+    duration: 60,
     price: "$110",
   },
   {
     id: "meditation",
     name: "Guided Meditation",
-    duration: "60 min",
+    duration: 60,
     price: "$95",
   },
   {
     id: "aromatherapy",
     name: "Forest Aromatherapy",
-    duration: "45 min",
+    duration: 45,
     price: "$80",
   },
   {
     id: "deep-tissue",
     name: "Restorative Deep Tissue",
-    duration: "90 min",
+    duration: 90,
     price: "$150",
   },
 ];
 
-const clinicians = [
-  "Dr. Amara Osei",
-  "Priya Venkatesh",
-  "Jonah Whitfield",
-  "Seren Llywelyn",
-  "Kenji Murakami",
-  "Nadia Ferreira",
-  "No preference",
+interface Clinician {
+  name: string;
+  specialties: string[];
+  availability: Record<number, string[]>;
+}
+
+const clinicians: Clinician[] = [
+  {
+    name: "Dr. Amara Cohen",
+    specialties: ["meditation", "aromatherapy"],
+    availability: { 1: ["09:00", "11:00", "13:00"], 3: ["11:00", "13:00", "15:00"], 5: ["09:00", "11:00", "13:00"] },
+  },
+  {
+    name: "Samantha Whittaker",
+    specialties: ["herbal-wrap", "botanical-facial"],
+    availability: { 1: ["09:00", "11:00", "13:00", "15:00"], 2: ["10:00", "12:00", "14:00"], 4: ["09:00", "11:00", "13:00", "15:00"], 6: ["09:00", "11:00", "13:00"] },
+  },
+  {
+    name: "Jonah Whitfield",
+    specialties: ["deep-tissue", "hot-stone"],
+    availability: { 1: ["10:00", "12:00", "14:00", "16:00"], 2: ["10:00", "12:00", "14:00"], 3: ["10:00", "12:00", "14:00", "16:00"], 4: ["10:00", "12:00", "14:00", "16:00"], 5: ["10:00", "12:00", "14:00"] },
+  },
+  {
+    name: "Seren Llywelyn",
+    specialties: ["meditation"],
+    availability: { 0: ["10:00", "12:00", "14:00"], 2: ["10:00", "12:00", "14:00", "16:00"], 4: ["10:00", "12:00", "14:00", "16:00"], 6: ["10:00", "12:00", "14:00"] },
+  },
+  {
+    name: "Kenji Miller",
+    specialties: ["hot-stone", "deep-tissue"],
+    availability: { 1: ["09:00", "11:00", "13:00", "15:00"], 3: ["09:00", "11:00", "13:00", "15:00"], 5: ["09:00", "11:00", "13:00"], 6: ["09:00", "11:00", "13:00"] },
+  },
+  {
+    name: "Nadia O'Neill",
+    specialties: ["botanical-facial", "aromatherapy", "herbal-wrap"],
+    availability: { 2: ["09:00", "11:00", "13:00", "15:00"], 4: ["09:00", "11:00", "13:00", "15:00"], 5: ["09:00", "11:00", "13:00"], 6: ["09:00", "11:00", "13:00"] },
+  },
 ];
 
-const timeSlots = [
-  "9:00 AM",
-  "10:00 AM",
-  "11:00 AM",
-  "1:00 PM",
-  "2:00 PM",
-  "3:00 PM",
-  "4:00 PM",
-  "5:00 PM",
-];
+const weekdayLabels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const noPreference = "No preference";
+
+function dateKey(date: Date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function formatTime(time: string) {
+  const [hours, minutes] = time.split(":").map(Number);
+  const suffix = hours >= 12 ? "PM" : "AM";
+  return `${hours % 12 || 12}:${String(minutes).padStart(2, "0")} ${suffix}`;
+}
+
+function closingTime(weekday: number) {
+  if (weekday === 0) return 16 * 60;
+  if (weekday === 6) return 17 * 60;
+  return 19 * 60;
+}
 
 type Step = "service" | "datetime" | "details" | "confirm";
 
@@ -80,6 +121,9 @@ interface FormData {
 export default function Booking() {
   const [step, setStep] = useState<Step>("service");
   const [submitted, setSubmitted] = useState(false);
+  const [calendarMonth, setCalendarMonth] = useState(
+    () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+  );
   const [form, setForm] = useState<FormData>({
     service: "",
     clinician: "",
@@ -96,6 +140,41 @@ export default function Booking() {
   const stepIndex = steps.indexOf(step);
 
   const selectedService = services.find((s) => s.id === form.service);
+  const matchingClinicians = clinicians.filter((clinician) =>
+    clinician.specialties.includes(form.service),
+  );
+  const selectedClinicians =
+    form.clinician === noPreference
+      ? matchingClinicians
+      : matchingClinicians.filter((clinician) => clinician.name === form.clinician);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const firstWeekday = new Date(
+    calendarMonth.getFullYear(),
+    calendarMonth.getMonth(),
+    1,
+  ).getDay();
+  const daysInMonth = new Date(
+    calendarMonth.getFullYear(),
+    calendarMonth.getMonth() + 1,
+    0,
+  ).getDate();
+
+  function availableTimes(date: Date) {
+    const weekday = date.getDay();
+    const starts = new Set(
+      selectedClinicians.flatMap((clinician) => clinician.availability[weekday] ?? []),
+    );
+    const duration = selectedService?.duration ?? 0;
+    return [...starts]
+      .filter(([hour, minute]) => Number(hour) * 60 + Number(minute) + duration <= closingTime(weekday))
+      .sort()
+      .map(formatTime);
+  }
+
+  function isDateAvailable(date: Date) {
+    return date >= today && availableTimes(date).length > 0;
+  }
 
   function next() {
     const idx = steps.indexOf(step);
@@ -159,6 +238,15 @@ export default function Booking() {
           >
             Book another session
           </button>
+          <div className="mt-4">
+            <Link
+              to="/medical-intake"
+              className="inline-block px-7 py-3 rounded-full text-sm font-semibold border transition-opacity hover:opacity-80"
+              style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
+            >
+              Fill Out Medical Intake Form
+            </Link>
+          </div>
         </div>
       </div>
     );
@@ -239,6 +327,21 @@ export default function Booking() {
             )}
           </div>
 
+          {step === "service" && (
+            <div className="mb-6 text-center">
+              <p className="text-sm mb-3" style={{ color: "var(--muted-foreground)" }}>
+                Prior to booking your appointment
+              </p>
+              <Link
+                to="/medical-intake"
+                className="inline-block px-7 py-3 rounded-full text-sm font-semibold border transition-opacity hover:opacity-80"
+                style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
+              >
+                Fill Out Medical Intake Form
+              </Link>
+            </div>
+          )}
+
           <div
             className="rounded-2xl p-8"
             style={{ backgroundColor: "var(--card)" }}
@@ -262,7 +365,12 @@ export default function Booking() {
                   {services.map((s) => (
                     <button
                       key={s.id}
-                      onClick={() => update("service", s.id)}
+                      onClick={() => {
+                        update("service", s.id);
+                        update("clinician", "");
+                        update("date", "");
+                        update("time", "");
+                      }}
                       className="text-left p-4 rounded-xl border-2 transition-all duration-200"
                       style={{
                         borderColor:
@@ -285,7 +393,7 @@ export default function Booking() {
                         className="text-xs mt-1"
                         style={{ color: "var(--muted-foreground)" }}
                       >
-                        {s.duration} · {s.price}
+                        {s.duration} min · {s.price}
                       </div>
                     </button>
                   ))}
@@ -307,11 +415,12 @@ export default function Booking() {
                   }}
                 >
                   <option value="">Select a practitioner…</option>
-                  {clinicians.map((c) => (
-                    <option key={c} value={c}>
-                      {c}
+                  {matchingClinicians.map((c) => (
+                    <option key={c.name} value={c.name}>
+                      {c.name}
                     </option>
                   ))}
+                  <option value={noPreference}>No preference</option>
                 </select>
               </div>
             )}
@@ -329,36 +438,89 @@ export default function Booking() {
                   className="text-sm mb-6"
                   style={{ color: "var(--muted-foreground)" }}
                 >
-                  We are open Monday–Saturday, 9am–7pm.
+                  Appointment times follow our hours: Mon–Fri 9am–7pm, Saturday 9am–5pm, and Sunday 10am–4pm. Available days and times vary by practitioner.
                 </p>
-                <label
-                  className="block mb-2 text-sm font-semibold"
-                  style={{ color: "var(--foreground)" }}
+                <div
+                  className="rounded-2xl border p-4 sm:p-5 mb-6"
+                  style={{ backgroundColor: "var(--background)", borderColor: "var(--border)" }}
                 >
-                  Date
-                </label>
-                <input
-                  type="date"
-                  value={form.date}
-                  min={new Date().toISOString().split("T")[0]}
-                  onChange={(e) => update("date", e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl text-sm outline-none border mb-6"
-                  style={{
-                    backgroundColor: "var(--background)",
-                    color: "var(--foreground)",
-                    borderColor: "var(--border)",
-                  }}
-                />
+                  <div className="flex items-center justify-between mb-4">
+                    <button
+                      type="button"
+                      aria-label="Previous month"
+                      disabled={calendarMonth.getFullYear() === today.getFullYear() && calendarMonth.getMonth() === today.getMonth()}
+                      onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() - 1, 1))}
+                      className="w-9 h-9 rounded-full border disabled:opacity-30 transition-colors hover:bg-[var(--card)]"
+                      style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
+                    >
+                      ‹
+                    </button>
+                    <h3 className="font-serif text-lg font-semibold" style={{ color: "var(--foreground)" }}>
+                      {calendarMonth.toLocaleDateString(undefined, { month: "long", year: "numeric" })}
+                    </h3>
+                    <button
+                      type="button"
+                      aria-label="Next month"
+                      onClick={() => setCalendarMonth(new Date(calendarMonth.getFullYear(), calendarMonth.getMonth() + 1, 1))}
+                      className="w-9 h-9 rounded-full border transition-colors hover:bg-[var(--card)]"
+                      style={{ borderColor: "var(--border)", color: "var(--foreground)" }}
+                    >
+                      ›
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center">
+                    {weekdayLabels.map((day) => (
+                      <div key={day} className="py-2 text-xs font-semibold" style={{ color: "var(--muted-foreground)" }}>
+                        {day}
+                      </div>
+                    ))}
+                    {Array.from({ length: firstWeekday }, (_, index) => (
+                      <div key={`empty-${index}`} aria-hidden="true" />
+                    ))}
+                    {Array.from({ length: daysInMonth }, (_, index) => {
+                      const date = new Date(calendarMonth.getFullYear(), calendarMonth.getMonth(), index + 1);
+                      const key = dateKey(date);
+                      const available = isDateAvailable(date);
+                      const selected = form.date === key;
+                      return (
+                        <button
+                          key={key}
+                          type="button"
+                          disabled={!available}
+                          aria-label={`${date.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" })}${available ? " available" : " unavailable"}`}
+                          aria-pressed={selected}
+                          onClick={() => {
+                            update("date", key);
+                            update("time", "");
+                          }}
+                          className="aspect-square rounded-full text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-30"
+                          style={{
+                            backgroundColor: selected ? "var(--primary)" : "transparent",
+                            color: selected ? "white" : "var(--foreground)",
+                            outline: available && !selected ? "1px solid var(--border)" : "none",
+                          }}
+                        >
+                          {index + 1}
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <p className="text-xs mt-4" style={{ color: "var(--muted-foreground)" }}>
+                    Available dates are outlined; unavailable dates cannot be selected.
+                  </p>
+                </div>
                 <label
                   className="block mb-3 text-sm font-semibold"
                   style={{ color: "var(--foreground)" }}
                 >
                   Time
                 </label>
-                <div className="grid grid-cols-4 gap-2">
-                  {timeSlots.map((t) => (
+                {form.date ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {availableTimes(new Date(`${form.date}T00:00:00`)).map((t) => (
                     <button
                       key={t}
+                      type="button"
                       onClick={() => update("time", t)}
                       className="py-2.5 rounded-xl text-xs font-semibold border-2 transition-all duration-200"
                       style={{
@@ -372,7 +534,17 @@ export default function Booking() {
                       {t}
                     </button>
                   ))}
-                </div>
+                  {availableTimes(new Date(`${form.date}T00:00:00`)).length === 0 && (
+                    <p className="col-span-full text-sm" style={{ color: "var(--muted-foreground)" }}>
+                      No appointment times are available for this date.
+                    </p>
+                  )}
+                  </div>
+                ) : (
+                  <p className="text-sm" style={{ color: "var(--muted-foreground)" }}>
+                    Choose a date to see available appointment times.
+                  </p>
+                )}
               </div>
             )}
 
@@ -517,7 +689,7 @@ export default function Booking() {
                 >
                   {[
                     ["Treatment", selectedService?.name],
-                    ["Duration", selectedService?.duration],
+                    ["Duration", selectedService ? `${selectedService.duration} min` : ""],
                     ["Price", selectedService?.price],
                     ["Practitioner", form.clinician || "No preference"],
                     ["Date", form.date],

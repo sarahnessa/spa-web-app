@@ -6,6 +6,7 @@ import Booking from './pages/Booking'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
 import Admin from './pages/Admin'
+import MedicalIntake from './pages/MedicalIntake'
 
 export const router = createBrowserRouter([
   { path: '/admin', Component: Admin },
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { index: true, Component: Home },
       { path: 'about', Component: About },
       { path: 'booking', Component: Booking },
+      { path: 'medical-intake', Component: MedicalIntake },
       { path: 'gallery', Component: Gallery },
       { path: 'contact', Component: Contact },
     ]

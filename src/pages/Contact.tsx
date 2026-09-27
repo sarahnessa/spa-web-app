@@ -10,6 +10,10 @@ export default function Contact() {
     message: "",
   });
   const [sent, setSent] = useState(false);
+  const [mapReset, setMapReset] = useState(0);
+
+  const mapSource =
+    "https://www.openstreetmap.org/export/embed.html?bbox=-124.112885%2C44.463303%2C-124.052885%2C44.503303&layer=mapnik&marker=44.483303%2C-124.082885";
 
   function update(field: keyof typeof form, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -63,7 +67,7 @@ export default function Contact() {
 
         {/* Contact info row — info left, map right */}
         <div className="max-w-6xl mx-auto px-6 pb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="contact-info-grid grid grid-cols-1 gap-8 items-start">
             {/* Left: contact info */}
             <div className="space-y-6">
               <h2
@@ -96,7 +100,7 @@ export default function Contact() {
                     </svg>
                   ),
                   label: "Address",
-                  lines: ["12 Fernwood Grove", "Maplecrest Valley, OR 97401"],
+                  lines: ["End of NW Quail St", "Seal Rock, OR"],
                 },
                 {
                   icon: (
@@ -181,13 +185,26 @@ export default function Contact() {
                       {label}
                     </div>
                     {lines.map((l) => (
-                      <div
-                        key={l}
-                        className="text-base font-medium"
-                        style={{ color: "var(--foreground)" }}
-                      >
-                        {l}
-                      </div>
+                      label === "Address" ? (
+                        <a
+                          key={l}
+                          href="https://www.google.com/maps/search/?api=1&query=44.483303%2C-124.082885"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block text-base font-medium underline underline-offset-2"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          {l}
+                        </a>
+                      ) : (
+                        <div
+                          key={l}
+                          className="text-base font-medium"
+                          style={{ color: "var(--foreground)" }}
+                        >
+                          {l}
+                        </div>
+                      )
                     ))}
                   </div>
                 </div>
@@ -197,7 +214,7 @@ export default function Contact() {
             {/* Right: map */}
             <div>
               <h3
-                className="font-serif text-3xl font-semibold mb-4"
+                className="font-serif text-3xl font-semibold mb-6"
                 style={{ color: "var(--foreground)" }}
               >
                 Directions
@@ -207,20 +224,37 @@ export default function Contact() {
                 style={{ border: "2px solid var(--border)" }}
               >
                 <iframe
+                  key={mapReset}
                   title="Serenova Wellness Spa location"
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=-122.7%2C42.2%2C-122.5%2C42.4&layer=mapnik"
+                  src={mapSource}
                   className="w-full"
-                  style={{ height: "320px", border: "none" }}
+                  style={{
+                    height: "320px",
+                    border: "none",
+                    filter: "saturate(0.72) sepia(0.08)",
+                  }}
                   loading="lazy"
                 />
+                <button
+                  type="button"
+                  onClick={() => setMapReset((reset) => reset + 1)}
+                  className="absolute left-3 top-[76px] z-10 rounded-lg border px-3 py-2 text-xs font-semibold shadow-md transition-colors hover:opacity-90"
+                  style={{
+                    backgroundColor: "var(--card)",
+                    borderColor: "var(--border)",
+                    color: "var(--foreground)",
+                  }}
+                  aria-label="Recenter map on the spa"
+                >
+                  ⌖ Recenter
+                </button>
               </div>
               <p
                 className="text-base mt-3 leading-relaxed"
                 style={{ color: "var(--muted-foreground)" }}
               >
-                Take the Maplecrest Valley exit off OR-62 N. We are on the left,
-                set back from the road behind the cedar grove. Ample parking
-                on-site.
+                Serenova Wellness Spa is located at the end of NW Quail St in
+                Seal Rock. Use the map pin for the location.
               </p>
             </div>
           </div>
