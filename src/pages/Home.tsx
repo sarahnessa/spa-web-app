@@ -342,7 +342,7 @@ export default function Home() {
                 <Link
                   to="/booking"
                   className="px-8 py-3.5 rounded-full font-semibold text-sm transition-all duration-200 hover:opacity-90 hover:scale-105"
-                  style={{ backgroundColor: "var(--primary)", color: "white" }}
+                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
                 >
                   Book a Session
                 </Link>

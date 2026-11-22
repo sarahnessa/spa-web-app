@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router";
 import { BlobGreen, BlobLilac } from "../components/Blobs";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl text-sm outline-none border focus:ring-2 focus:ring-[var(--ring)]";
@@ -77,6 +77,42 @@ function Section({
 
 export default function MedicalIntake() {
   const [submitted, setSubmitted] = useState(false);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLElement>(null);
+  const restoreSubmitFocusRef = useRef(false);
+
+  useEffect(() => {
+    if (!submitted) {
+      if (restoreSubmitFocusRef.current) {
+        restoreSubmitFocusRef.current = false;
+        submitRef.current?.focus();
+      }
+      return;
+    }
+    const dialog = dialogRef.current;
+    const focusable = dialog?.querySelector<HTMLElement>("a[href], button:not([disabled])");
+    focusable?.focus();
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        restoreSubmitFocusRef.current = true;
+        setSubmitted(false);
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+      const items = Array.from(dialog.querySelectorAll<HTMLElement>("a[href], button:not([disabled])"));
+      if (!items.length) return;
+      if (event.shiftKey && document.activeElement === items[0]) {
+        event.preventDefault();
+        items[items.length - 1].focus();
+      } else if (!event.shiftKey && document.activeElement === items[items.length - 1]) {
+        event.preventDefault();
+        items[0].focus();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [submitted]);
 
   return (
     <>
@@ -84,7 +120,7 @@ export default function MedicalIntake() {
         <title>Medical Intake | Serenova Spa</title>
         <meta name="description" content="Complete your medical intake form." />
       </Helmet>
-      <main className="relative overflow-hidden">
+      <div inert={submitted} className="relative overflow-hidden">
         <BlobGreen className="absolute -top-16 -left-16 w-72 h-72 pointer-events-none opacity-50" />
         <BlobLilac className="absolute top-80 -right-20 w-64 h-64 pointer-events-none opacity-40" />
         <div className="max-w-3xl mx-auto px-6 py-16 relative">
@@ -189,19 +225,21 @@ export default function MedicalIntake() {
                 Back to booking
               </Link>
               <button
+                ref={submitRef}
                 type="submit"
                 className="px-7 py-3 rounded-full text-sm font-semibold"
-                style={{ backgroundColor: "var(--primary)", color: "white" }}
+                style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
               >
                 Submit Intake Form
               </button>
             </div>
           </form>
         </div>
-      </main>
+      </div>
       {submitted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/25 backdrop-blur-sm">
-          <section
+            <section
+            ref={dialogRef}
             role="alertdialog"
             aria-modal="true"
             aria-labelledby="intake-success-title"
@@ -220,7 +258,7 @@ export default function MedicalIntake() {
             <Link
               to="/booking"
               className="inline-block px-7 py-3 rounded-full text-sm font-semibold"
-              style={{ backgroundColor: "var(--primary)", color: "white" }}
+              style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
             >
               Go back to set your appointment
             </Link>

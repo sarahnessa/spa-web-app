@@ -234,7 +234,7 @@ export default function Booking() {
               });
             }}
             className="px-7 py-3 rounded-full text-sm font-semibold"
-            style={{ backgroundColor: "var(--primary)", color: "white" }}
+            style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
           >
             Book another session
           </button>
@@ -365,6 +365,8 @@ export default function Booking() {
                   {services.map((s) => (
                     <button
                       key={s.id}
+                      type="button"
+                      aria-pressed={form.service === s.id}
                       onClick={() => {
                         update("service", s.id);
                         update("clinician", "");
@@ -399,12 +401,14 @@ export default function Booking() {
                   ))}
                 </div>
                 <label
+                  htmlFor="booking-clinician"
                   className="block mb-2 text-sm font-semibold"
                   style={{ color: "var(--foreground)" }}
                 >
                   Practitioner preference
                 </label>
                 <select
+                  id="booking-clinician"
                   value={form.clinician}
                   onChange={(e) => update("clinician", e.target.value)}
                   className="w-full px-4 py-3 rounded-xl text-sm outline-none border"
@@ -509,18 +513,20 @@ export default function Booking() {
                     Available dates are outlined; unavailable dates cannot be selected.
                   </p>
                 </div>
-                <label
+                <p
+                  id="booking-time-label"
                   className="block mb-3 text-sm font-semibold"
                   style={{ color: "var(--foreground)" }}
                 >
                   Time
-                </label>
+                </p>
                 {form.date ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div role="group" aria-labelledby="booking-time-label" className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   {availableTimes(new Date(`${form.date}T00:00:00`)).map((t) => (
                     <button
                       key={t}
                       type="button"
+                      aria-pressed={form.time === t}
                       onClick={() => update("time", t)}
                       className="py-2.5 rounded-xl text-xs font-semibold border-2 transition-all duration-200"
                       style={{
@@ -566,12 +572,15 @@ export default function Booking() {
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label
+                      htmlFor="booking-first-name"
                       className="block text-xs font-semibold mb-1"
                       style={{ color: "var(--muted-foreground)" }}
                     >
                       First name
                     </label>
                     <input
+                      id="booking-first-name"
+                      autoComplete="given-name"
                       type="text"
                       value={form.firstName}
                       onChange={(e) => update("firstName", e.target.value)}
@@ -586,12 +595,15 @@ export default function Booking() {
                   </div>
                   <div>
                     <label
+                      htmlFor="booking-last-name"
                       className="block text-xs font-semibold mb-1"
                       style={{ color: "var(--muted-foreground)" }}
                     >
                       Last name
                     </label>
                     <input
+                      id="booking-last-name"
+                      autoComplete="family-name"
                       type="text"
                       value={form.lastName}
                       onChange={(e) => update("lastName", e.target.value)}
@@ -607,12 +619,15 @@ export default function Booking() {
                 </div>
                 <div className="mb-4">
                   <label
+                    htmlFor="booking-email"
                     className="block text-xs font-semibold mb-1"
                     style={{ color: "var(--muted-foreground)" }}
                   >
                     Email
                   </label>
                   <input
+                    id="booking-email"
+                    autoComplete="email"
                     type="email"
                     value={form.email}
                     onChange={(e) => update("email", e.target.value)}
@@ -627,12 +642,15 @@ export default function Booking() {
                 </div>
                 <div className="mb-4">
                   <label
+                    htmlFor="booking-phone"
                     className="block text-xs font-semibold mb-1"
                     style={{ color: "var(--muted-foreground)" }}
                   >
                     Phone (optional)
                   </label>
                   <input
+                    id="booking-phone"
+                    autoComplete="tel"
                     type="tel"
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value)}
@@ -647,12 +665,14 @@ export default function Booking() {
                 </div>
                 <div>
                   <label
+                    htmlFor="booking-notes"
                     className="block text-xs font-semibold mb-1"
                     style={{ color: "var(--muted-foreground)" }}
                   >
                     Notes or intentions (optional)
                   </label>
                   <textarea
+                    id="booking-notes"
                     value={form.notes}
                     onChange={(e) => update("notes", e.target.value)}
                     rows={3}
@@ -736,7 +756,7 @@ export default function Booking() {
                   onClick={next}
                   disabled={!canProceed()}
                   className="px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 disabled:opacity-40"
-                  style={{ backgroundColor: "var(--primary)", color: "white" }}
+                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
                 >
                   Continue
                 </button>
@@ -744,7 +764,7 @@ export default function Booking() {
                 <button
                   onClick={() => setSubmitted(true)}
                   className="px-6 py-2.5 rounded-full text-sm font-semibold"
-                  style={{ backgroundColor: "var(--primary)", color: "white" }}
+                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
                 >
                   Confirm Booking
                 </button>

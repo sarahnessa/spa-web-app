@@ -288,7 +288,7 @@ export default function Contact() {
                     setForm({ name: "", email: "", subject: "", message: "" });
                   }}
                   className="mt-8 px-8 py-3 rounded-full text-base font-semibold"
-                  style={{ backgroundColor: "var(--primary)", color: "white" }}
+                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
                 >
                   Send another message
                 </button>
@@ -304,12 +304,14 @@ export default function Contact() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
                   <div>
                     <label
+                      htmlFor="contact-name"
                       className="block text-sm font-bold mb-2"
                       style={{ color: "var(--foreground)" }}
                     >
                       Your name
                     </label>
                     <input
+                      id="contact-name"
                       required
                       type="text"
                       value={form.name}
@@ -325,12 +327,14 @@ export default function Contact() {
                   </div>
                   <div>
                     <label
+                      htmlFor="contact-email"
                       className="block text-sm font-bold mb-2"
                       style={{ color: "var(--foreground)" }}
                     >
                       Email address
                     </label>
                     <input
+                      id="contact-email"
                       required
                       type="email"
                       value={form.email}
@@ -347,12 +351,14 @@ export default function Contact() {
                 </div>
                 <div className="mb-5">
                   <label
+                    htmlFor="contact-subject"
                     className="block text-sm font-bold mb-2"
                     style={{ color: "var(--foreground)" }}
                   >
                     Subject
                   </label>
                   <select
+                    id="contact-subject"
                     required
                     value={form.subject}
                     onChange={(e) => update("subject", e.target.value)}
@@ -382,12 +388,14 @@ export default function Contact() {
                 </div>
                 <div className="mb-8">
                   <label
+                    htmlFor="contact-message"
                     className="block text-sm font-bold mb-2"
                     style={{ color: "var(--foreground)" }}
                   >
                     Message
                   </label>
                   <textarea
+                    id="contact-message"
                     required
                     value={form.message}
                     onChange={(e) => update("message", e.target.value)}
@@ -404,7 +412,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   className="w-full py-4 rounded-full font-bold text-base transition-all duration-200 hover:opacity-90"
-                  style={{ backgroundColor: "var(--primary)", color: "white" }}
+                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
                 >
                   Send Message
                 </button>

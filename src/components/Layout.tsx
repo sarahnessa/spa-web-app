@@ -1,5 +1,5 @@
 import { Link, useLocation, Outlet } from 'react-router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BlobSmall } from './Blobs'
 
 const navLinks = [
@@ -13,6 +13,19 @@ const navLinks = [
 export default function Layout() {
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+
+  useEffect(() => {
+    if (!menuOpen) return
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        setMenuOpen(false)
+        menuButtonRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [menuOpen])
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
@@ -55,9 +68,12 @@ export default function Layout() {
 
           {/* Mobile hamburger */}
           <button
+            ref={menuButtonRef}
             className="md:hidden p-2 rounded-lg"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
             style={{ color: 'var(--foreground)' }}
           >
             <div className="w-5 h-0.5 mb-1.5 transition-all duration-300 ease-in-out" style={{ backgroundColor: 'currentColor', transform: menuOpen ? 'rotate(45deg) translateY(14px)' : '' }} />
@@ -68,7 +84,7 @@ export default function Layout() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+          <nav id="mobile-navigation" aria-label="Mobile navigation" className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
             {navLinks.map(({ to, label }) => (
               <Link
                 key={to}
@@ -80,7 +96,7 @@ export default function Layout() {
                 {label}
               </Link>
             ))}
-          </div>
+          </nav>
         )}
       </header>
 

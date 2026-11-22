@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -43,8 +43,11 @@ export default function Admin() {
   const [search, setSearch] = useState('')
   const [notice, setNotice] = useState('')
   const [mobileOpen, setMobileOpen] = useState(false)
+  const menuTriggerRef = useRef<HTMLButtonElement>(null)
+  const drawerRef = useRef<HTMLDivElement>(null)
   const editor = useEditor({
     extensions: [StarterKit],
+    editorProps: { attributes: { 'aria-label': 'Treatment description' } },
     content: '<h2>A slower kind of care</h2><p>Let the day fall away with our signature <strong>deep tissue massage</strong>, thoughtfully tailored to where your body needs care most. Our therapists use warm botanical oils and grounding techniques to help you find your way back to stillness.</p><ul><li><p>Choose a 60 or 90 minute session</p></li><li><p>Personalized pressure and aromatherapy</p></li><li><p>A quiet moment to settle in before your treatment</p></li></ul><p><em>Your time, your pace, your sanctuary.</em></p>',
   })
   const filtered = useMemo(() => bookings.filter((booking) => {
@@ -56,10 +59,42 @@ export default function Admin() {
   const today = new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
   const feedback = (message: string) => { setNotice(message); window.setTimeout(() => setNotice(''), 2600) }
 
+  useEffect(() => {
+    if (!mobileOpen) return
+    const drawer = drawerRef.current
+    const menuTrigger = menuTriggerRef.current
+    const focusable = drawer?.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])")
+    focusable?.[0]?.focus()
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        event.preventDefault()
+        setMobileOpen(false)
+        menuTrigger?.focus()
+        return
+      }
+      if (event.key !== 'Tab' || !drawer) return
+      const items = Array.from(drawer.querySelectorAll<HTMLElement>("a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex='-1'])"))
+      if (!items.length) return
+      if (event.shiftKey && document.activeElement === items[0]) {
+        event.preventDefault()
+        items[items.length - 1].focus()
+      } else if (!event.shiftKey && document.activeElement === items[items.length - 1]) {
+        event.preventDefault()
+        items[0].focus()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      menuTrigger?.focus()
+    }
+  }, [mobileOpen])
+
   return (
     <div className="min-h-screen bg-[#f5f1ea] text-[#3a3028] md:flex">
-      {mobileOpen && <button aria-label="Close navigation" onClick={() => setMobileOpen(false)} className="fixed inset-0 z-40 bg-[#241e19]/30 md:hidden"/>}
-      <aside className={`fixed inset-y-0 left-0 z-50 flex w-[252px] flex-col border-r border-[#e4ddd2] bg-[#fbf9f5] px-5 py-6 transition-transform md:static md:translate-x-0 ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      {mobileOpen && <div aria-hidden="true" onClick={() => setMobileOpen(false)} className="fixed inset-0 z-40 bg-[#241e19]/30 md:hidden"/>}
+      <div id="admin-navigation" ref={drawerRef} role={mobileOpen ? 'dialog' : undefined} aria-modal={mobileOpen || undefined} aria-label={mobileOpen ? 'Admin navigation' : undefined} className={`fixed inset-y-0 left-0 z-50 w-[252px] flex-col border-r border-[#e4ddd2] bg-[#fbf9f5] px-5 py-6 transition-transform md:static md:flex md:translate-x-0 ${mobileOpen ? 'flex translate-x-0' : 'hidden md:flex md:translate-x-0'}`}>
+        <button type="button" onClick={() => { setMobileOpen(false); menuTriggerRef.current?.focus() }} className="mb-4 self-end rounded-lg px-3 py-2 text-sm font-semibold text-[#477a74] md:hidden">Close navigation</button>
         <Link to="/" className="mb-9 flex items-center gap-3 px-2">
           <span className="flex h-10 w-10 items-center justify-center rounded-[15px] bg-[#6ba5a0] font-serif text-xl text-white">S</span>
           <span><span className="block font-serif text-lg font-semibold leading-5">Serenova</span><span className="text-[10px] font-semibold uppercase tracking-[.2em] text-[#8a7d70]">Wellness Spa</span></span>
@@ -69,23 +104,23 @@ export default function Admin() {
           {navItems.map(({ label, icon }) => <button key={label} onClick={() => { setActiveNav(label); setMobileOpen(false); if (label === 'Treatments') document.getElementById('treatment-editor')?.scrollIntoView({ behavior: 'smooth' }); else if (label !== 'Overview') feedback(`${label} view is coming soon`) }} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-[13px] font-semibold transition-colors ${activeNav === label ? 'bg-[#e6efea] text-[#477a74]' : 'text-[#786e63] hover:bg-[#f0ece5]'}`}><Icon name={icon}/>{label}{label === 'Appointments' && <span className="ml-auto rounded-full bg-white px-2 py-0.5 text-[10px] text-[#6ba5a0]">8</span>}</button>)}
         </nav>
         <div className="mb-2 mt-8 px-3 text-[10px] font-bold uppercase tracking-[.18em] text-[#a09487]">Preferences</div>
-        <button onClick={() => feedback('Settings are coming soon')} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold text-[#786e63] hover:bg-[#f0ece5]"><Icon name="settings"/>Settings</button>
+        <button type="button" onClick={() => feedback('Settings are coming soon')} className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-semibold text-[#786e63] hover:bg-[#f0ece5]"><Icon name="settings"/>Settings</button>
         <div className="mt-auto rounded-2xl border border-[#e7dfd3] bg-[#f5f1ea] p-4">
           <div className="mb-2 flex items-center justify-between"><span className="text-xs font-bold">Need a hand?</span><span className="h-2 w-2 rounded-full bg-[#8eaf86]"/></div>
           <p className="mb-3 text-[11px] leading-relaxed text-[#85796d]">Our team is here to help your sanctuary thrive.</p>
-          <button onClick={() => feedback('Support team notified')} className="text-xs font-bold text-[#548d87]">Contact support <span aria-hidden="true">↗</span></button>
+        <button type="button" onClick={() => feedback('Support team notified')} className="text-xs font-bold text-[#548d87]">Contact support <span aria-hidden="true">↗</span></button>
         </div>
-        <button onClick={() => feedback('You are all caught up')} className="mt-4 flex items-center gap-3 border-t border-[#e8e1d7] px-2 pt-4 text-left"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#dfd4c5] text-xs font-bold text-[#66594c]">SC</span><span className="min-w-0 flex-1"><span className="block text-xs font-bold">Sarah Chen</span><span className="block text-[10px] text-[#92877b]">Spa administrator</span></span><Icon name="more" size={16}/></button>
-      </aside>
+        <button type="button" onClick={() => feedback('You are all caught up')} className="mt-4 flex items-center gap-3 border-t border-[#e8e1d7] px-2 pt-4 text-left"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#dfd4c5] text-xs font-bold text-[#66594c]">SC</span><span className="min-w-0 flex-1"><span className="block text-xs font-bold">Sarah Chen</span><span className="block text-[10px] text-[#92877b]">Spa administrator</span></span><Icon name="more" size={16}/></button>
+      </div>
 
-      <main className="min-w-0 flex-1">
+      <main inert={mobileOpen} className="min-w-0 flex-1">
         <header className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-[#e4ddd2] bg-[#f5f1ea]/95 px-5 backdrop-blur md:px-9">
-          <div className="flex items-center gap-3"><button onClick={() => setMobileOpen(true)} aria-label="Open navigation" className="rounded-lg p-2 text-[#6a6055] hover:bg-[#ebe5db] md:hidden"><span className="block h-0.5 w-5 bg-current"/><span className="mt-1 block h-0.5 w-5 bg-current"/><span className="mt-1 block h-0.5 w-5 bg-current"/></button><div className="hidden text-xs text-[#988c80] sm:block">Serenova <span className="px-1.5">/</span><span className="font-semibold text-[#55483d]">{activeNav}</span></div><span className="font-serif text-lg font-semibold sm:hidden">{activeNav}</span></div>
-          <div className="flex items-center gap-2 sm:gap-4"><label className="hidden h-10 w-56 items-center gap-2 rounded-xl border border-[#e4ddd2] bg-[#fbf9f5] px-3 text-[#998d80] md:flex"><Icon name="search" size={16}/><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search anything..." className="w-full bg-transparent text-xs text-[#3a3028] outline-none placeholder:text-[#a69a8d]"/><kbd className="rounded border border-[#e7dfd3] px-1 text-[9px]">⌘ K</kbd></label><button onClick={() => feedback('You’re all caught up!')} className="relative rounded-xl p-2.5 text-[#786e63] hover:bg-[#ebe5db]" aria-label="Notifications"><Icon name="bell"/><span className="absolute right-2 top-2 h-2 w-2 rounded-full border-2 border-[#f5f1ea] bg-[#d39175]"/></button><span className="hidden h-8 w-px bg-[#e4ddd2] sm:block"/><div className="hidden items-center gap-2.5 sm:flex"><span className="text-right"><span className="block text-xs font-bold mt-2">Sarah Chen</span><span className="text-[10px] text-[#968a7e] block mb-3">Administrator</span></span><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ded1bf] text-xs font-bold">SC</span></div></div>
+          <div className="flex items-center gap-3"><button ref={menuTriggerRef} type="button" onClick={() => setMobileOpen(true)} aria-expanded={mobileOpen} aria-controls="admin-navigation" aria-label="Open navigation" className="rounded-lg p-2 text-[#6a6055] hover:bg-[#ebe5db] md:hidden"><span className="block h-0.5 w-5 bg-current"/><span className="mt-1 block h-0.5 w-5 bg-current"/><span className="mt-1 block h-0.5 w-5 bg-current"/></button><div className="hidden text-xs text-[#988c80] sm:block">Serenova <span className="px-1.5">/</span><span className="font-semibold text-[#55483d]">{activeNav}</span></div><span className="font-serif text-lg font-semibold sm:hidden">{activeNav}</span></div>
+          <div className="flex items-center gap-2 sm:gap-4"><label className="hidden h-10 w-56 items-center gap-2 rounded-xl border border-[#e4ddd2] bg-[#fbf9f5] px-3 text-[#998d80] md:flex"><Icon name="search" size={16}/><input aria-label="Search all admin records" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search anything..." className="w-full bg-transparent text-xs text-[#3a3028] outline-none placeholder:text-[#a69a8d]"/><kbd className="rounded border border-[#e7dfd3] px-1 text-[9px]">⌘ K</kbd></label><button type="button" onClick={() => feedback('You’re all caught up!')} className="relative rounded-xl p-2.5 text-[#786e63] hover:bg-[#ebe5db]" aria-label="Notifications"><Icon name="bell"/><span className="absolute right-2 top-2 h-2 w-2 rounded-full border-2 border-[#f5f1ea] bg-[#d39175]"/></button><span className="hidden h-8 w-px bg-[#e4ddd2] sm:block"/><div className="hidden items-center gap-2.5 sm:flex"><span className="text-right"><span className="block text-xs font-bold mt-2">Sarah Chen</span><span className="text-[10px] text-[#968a7e] block mb-3">Administrator</span></span><span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#ded1bf] text-xs font-bold">SC</span></div></div>
         </header>
 
         <div className="mx-auto max-w-[1400px] px-5 py-7 md:px-9 md:py-9">
-          <div className="mb-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="mb-1 text-xs font-semibold tracking-wide text-[#8f8275]">{today} <span className="px-1">·</span> Welcome back, Sarah</p><h1 className="font-serif text-[32px] font-medium leading-tight tracking-[-.03em] md:text-[38px]">Your sanctuary at a glance</h1><p className="mt-2 text-sm text-[#8b7f73]">Here’s what’s happening at Serenova today.</p></div><button onClick={() => feedback('New appointment form opened')} className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#568f89] px-4 py-3 text-xs font-bold text-white shadow-sm transition hover:bg-[#477c76]"><Icon name="plus" size={16}/> New appointment</button></div>
+          <div className="mb-7 flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="mb-1 text-xs font-semibold tracking-wide text-[#8f8275]">{today} <span className="px-1">·</span> Welcome back, Sarah</p><h1 className="font-serif text-[32px] font-medium leading-tight tracking-[-.03em] md:text-[38px]">Your sanctuary at a glance</h1><p className="mt-2 text-sm text-[#8b7f73]">Here’s what’s happening at Serenova today.</p></div><button type="button" onClick={() => feedback('New appointment form opened')} className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#315f58] px-4 py-3 text-xs font-bold text-white shadow-sm transition hover:bg-[#264b46]"><Icon name="plus" size={16}/> New appointment</button></div>
 
           <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Metric label="Today’s appointments" value="24" change="12%" detail="vs. yesterday" icon="calendar" tint="#e4efeb" tone="#5b918a"/>
@@ -104,8 +139,8 @@ export default function Admin() {
           </section>
 
           <section className="mt-5 overflow-hidden rounded-2xl border border-[#e7dfd3] bg-[#fbf9f5]">
-            <div className="flex flex-col justify-between gap-4 p-5 md:flex-row md:items-center md:px-6"><div><h2 className="font-serif text-lg font-semibold">Upcoming appointments</h2><p className="mt-1 text-xs text-[#968a7e]">A little care, thoughtfully planned.</p></div><div className="flex flex-wrap items-center gap-2"><label className="flex h-9 items-center gap-2 rounded-lg border border-[#e8e1d7] px-2.5 text-[#998d80] md:hidden"><Icon name="search" size={15}/><input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search clients" className="w-32 bg-transparent text-xs outline-none"/></label><button onClick={() => setActiveFilter(activeFilter === 'All bookings' ? 'Confirmed' : 'All bookings')} className="flex h-9 items-center gap-2 rounded-lg border border-[#e8e1d7] px-3 text-[11px] font-semibold text-[#756b60]"><Icon name="filter" size={14}/>{activeFilter}</button><button onClick={() => feedback('Appointment list exported')} className="h-9 rounded-lg border border-[#e8e1d7] px-3 text-[11px] font-semibold text-[#756b60] hover:bg-[#f5f1ea]">Export</button></div></div>
-            <div className="overflow-x-auto"><table className="w-full min-w-[700px] border-collapse text-left"><thead><tr className="border-y border-[#eee8df] bg-[#f8f5ef] text-[10px] font-bold uppercase tracking-[.11em] text-[#9a8e82]"><th className="px-6 py-3 font-semibold">Client</th><th className="px-4 py-3 font-semibold">Treatment</th><th className="px-4 py-3 font-semibold">Time</th><th className="px-4 py-3 font-semibold">Therapist</th><th className="px-4 py-3 font-semibold">Status</th><th className="px-5 py-3"/></tr></thead><tbody>{filtered.map((booking)=><tr key={booking.name} className="border-b border-[#f0ebe3] last:border-0 hover:bg-[#fcfaf7]"><td className="px-6 py-3.5"><div className="flex items-center gap-3"><span style={{backgroundColor:booking.color}} className="flex h-9 w-9 items-center justify-center rounded-full text-[10px] font-bold text-[#63584d]">{booking.initials}</span><span className="text-xs font-bold">{booking.name}</span></div></td><td className="px-4 py-3.5 text-xs text-[#766c61]">{booking.service}</td><td className="px-4 py-3.5 text-xs font-semibold text-[#554b41]">{booking.time}</td><td className="px-4 py-3.5 text-xs text-[#766c61]">{booking.staff}</td><td className="px-4 py-3.5"><Status value={booking.status}/></td><td className="px-5 py-3.5 text-right"><button onClick={() => feedback(`Options for ${booking.name}`)} className="rounded-lg p-1.5 text-[#9c9084] hover:bg-[#f0ece5]" aria-label={`More options for ${booking.name}`}><Icon name="more" size={16}/></button></td></tr>)}{filtered.length===0 && <tr><td colSpan={6} className="px-6 py-8 text-center text-xs text-[#968a7e]">No appointments match your search.</td></tr>}</tbody></table></div>
+            <div className="flex flex-col justify-between gap-4 p-5 md:flex-row md:items-center md:px-6"><div><h2 className="font-serif text-lg font-semibold">Upcoming appointments</h2><p className="mt-1 text-xs text-[#968a7e]">A little care, thoughtfully planned.</p></div><div className="flex flex-wrap items-center gap-2"><label className="flex h-9 items-center gap-2 rounded-lg border border-[#e8e1d7] px-2.5 text-[#998d80] md:hidden"><Icon name="search" size={15}/><input aria-label="Search appointments" value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search clients" className="w-32 bg-transparent text-xs outline-none"/></label><button type="button" aria-pressed={activeFilter !== 'All bookings'} onClick={() => setActiveFilter(activeFilter === 'All bookings' ? 'Confirmed' : 'All bookings')} className="flex h-9 items-center gap-2 rounded-lg border border-[#e8e1d7] px-3 text-[11px] font-semibold text-[#756b60]"><Icon name="filter" size={14}/>{activeFilter}</button><button type="button" onClick={() => feedback('Appointment list exported')} className="h-9 rounded-lg border border-[#e8e1d7] px-3 text-[11px] font-semibold text-[#756b60] hover:bg-[#f5f1ea]">Export</button></div></div>
+            <div className="overflow-x-auto"><table className="w-full min-w-[700px] border-collapse text-left"><thead><tr className="border-y border-[#eee8df] bg-[#f8f5ef] text-[10px] font-bold uppercase tracking-[.11em] text-[#9a8e82]"><th className="px-6 py-3 font-semibold">Client</th><th className="px-4 py-3 font-semibold">Treatment</th><th className="px-4 py-3 font-semibold">Time</th><th className="px-4 py-3 font-semibold">Therapist</th><th className="px-4 py-3 font-semibold">Status</th><th className="px-5 py-3"><span className="sr-only">Actions</span></th></tr></thead><tbody>{filtered.map((booking)=><tr key={booking.name} className="border-b border-[#f0ebe3] last:border-0 hover:bg-[#fcfaf7]"><td className="px-6 py-3.5"><div className="flex items-center gap-3"><span style={{backgroundColor:booking.color}} className="flex h-9 w-9 items-center justify-center rounded-full text-[10px] font-bold text-[#63584d]">{booking.initials}</span><span className="text-xs font-bold">{booking.name}</span></div></td><td className="px-4 py-3.5 text-xs text-[#766c61]">{booking.service}</td><td className="px-4 py-3.5 text-xs font-semibold text-[#554b41]">{booking.time}</td><td className="px-4 py-3.5 text-xs text-[#766c61]">{booking.staff}</td><td className="px-4 py-3.5"><Status value={booking.status}/></td><td className="px-5 py-3.5 text-right"><button onClick={() => feedback(`Options for ${booking.name}`)} className="rounded-lg p-1.5 text-[#9c9084] hover:bg-[#f0ece5]" aria-label={`More options for ${booking.name}`}><Icon name="more" size={16}/></button></td></tr>)}{filtered.length===0 && <tr><td colSpan={6} className="px-6 py-8 text-center text-xs text-[#968a7e]">No appointments match your search.</td></tr>}</tbody></table></div>
             <div className="flex items-center justify-between border-t border-[#eee8df] px-5 py-3.5 md:px-6"><span className="text-[10px] text-[#978b7f]">Showing <strong className="text-[#61564b]">{filtered.length ? 1 : 0}–{filtered.length}</strong> of 24 appointments</span><div className="flex gap-1"><button aria-label="Previous page" onClick={()=>feedback('You’re viewing the first page')} className="rounded-lg border border-[#e8e1d7] p-1.5 text-[#988c80]"><Icon name="chevron" size={13}/></button><button aria-label="Next page" onClick={()=>feedback('Next appointments loaded')} className="rounded-lg border border-[#e8e1d7] p-1.5 text-[#988c80]"><Icon name="chevron" size={13}/></button></div></div>
           </section>
           <section id="treatment-editor" className="mt-5 scroll-mt-24 overflow-hidden rounded-2xl border border-[#e7dfd3] bg-[#fbf9f5]">
@@ -128,7 +163,7 @@ export default function Admin() {
                 </div>
                 <EditorContent editor={editor} className="tiptap-content min-h-[240px] px-5 py-4 md:px-8 md:py-6" />
               </div>
-              <div className="mt-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><span className="text-[10px] text-[#a09488]">Save logs the edited HTML to the developer console.</span><button onClick={() => { const html = editor?.getHTML() ?? ''; console.log(html); feedback('Treatment description saved') }} disabled={!editor} className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#568f89] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#477c76] disabled:cursor-not-allowed disabled:opacity-50"><span aria-hidden="true">✓</span>Save</button></div>
+              <div className="mt-4 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"><span className="text-[10px] text-[#a09488]">Save logs the edited HTML to the developer console.</span><button type="button" onClick={() => { const html = editor?.getHTML() ?? ''; console.log(html); feedback('Treatment description saved') }} disabled={!editor} className="inline-flex w-fit items-center gap-2 rounded-xl bg-[#315f58] px-4 py-2.5 text-xs font-bold text-white transition hover:bg-[#264b46] disabled:cursor-not-allowed disabled:opacity-50"><span aria-hidden="true">✓</span>Save</button></div>
             </div>
           </section>
           <div className="mt-6 flex flex-col justify-between gap-1 pb-3 text-[10px] text-[#a19589] sm:flex-row"><span>Serenova admin <span className="px-1">·</span> Take a moment for yourself, too.</span><span>© 2026 Serenova Wellness Spa</span></div>

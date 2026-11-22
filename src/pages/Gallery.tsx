@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { BlobGreen, BlobLilac, BlobBlue } from "../components/Blobs";
 
@@ -90,6 +90,40 @@ const categories = ["All", "Spaces", "Treatments", "Botanicals", "Nature"];
 export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [lightbox, setLightbox] = useState<(typeof photos)[0] | null>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const dialog = lightboxRef.current;
+    const closeButton = dialog?.querySelector<HTMLButtonElement>("button[aria-label='Close image']");
+    closeButton?.focus();
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setLightbox(null);
+        return;
+      }
+      if (event.key !== "Tab" || !dialog) return;
+      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      openerRef.current?.focus();
+    };
+  }, [lightbox]);
 
   const filtered =
     activeCategory === "All"
@@ -142,7 +176,9 @@ export default function Gallery() {
           {categories.map((cat) => (
             <button
               key={cat}
+              type="button"
               onClick={() => setActiveCategory(cat)}
+              aria-pressed={activeCategory === cat}
               className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200"
               style={{
                 backgroundColor:
@@ -160,10 +196,12 @@ export default function Gallery() {
         <section className="max-w-6xl mx-auto px-6 pb-24">
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
             {filtered.map((photo) => (
-              <div
+              <button
                 key={photo.id}
-                className="break-inside-avoid rounded-2xl overflow-hidden cursor-pointer group relative"
-                onClick={() => setLightbox(photo)}
+                type="button"
+                className="break-inside-avoid rounded-2xl overflow-hidden cursor-pointer group relative block w-full border-0 p-0 text-left"
+                aria-label={`View image: ${photo.alt}`}
+                onClick={(event) => { openerRef.current = event.currentTarget; setLightbox(photo); }}
                 style={{ backgroundColor: "var(--muted)" }}
               >
                 <img
@@ -182,7 +220,7 @@ export default function Gallery() {
                     {photo.category}
                   </span>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
           {filtered.length === 0 && (
@@ -198,6 +236,10 @@ export default function Gallery() {
         {/* Lightbox */}
         {lightbox && (
           <div
+            ref={lightboxRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Image preview: ${lightbox.alt}`}
             className="fixed inset-0 z-50 flex items-center justify-center p-6"
             style={{
               backgroundColor: "rgba(30,22,18,0.85)",
@@ -219,9 +261,11 @@ export default function Gallery() {
                 {lightbox.alt}
               </p>
               <button
+                type="button"
+                aria-label="Close image"
                 onClick={() => setLightbox(null)}
                 className="absolute -top-4 -right-4 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-lg"
-                style={{ backgroundColor: "var(--primary)" }}
+                style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
               >
                 ×
               </button>
