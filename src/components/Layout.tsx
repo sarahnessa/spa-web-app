@@ -1,6 +1,6 @@
-import { Link, useLocation, Outlet } from 'react-router'
-import { useEffect, useRef, useState } from 'react'
-import { BlobSmall } from './Blobs'
+import { Link, useLocation, Outlet } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
+import { BlobSmall } from './Blobs';
 
 const navLinks = [
   { to: '/', label: 'Home' },
@@ -8,37 +8,52 @@ const navLinks = [
   { to: '/booking', label: 'Book Now' },
   { to: '/gallery', label: 'Gallery' },
   { to: '/contact', label: 'Contact' },
-]
+];
 
 export default function Layout() {
-  const { pathname } = useLocation()
-  const [menuOpen, setMenuOpen] = useState(false)
-  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const { pathname } = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (!menuOpen) return
+    if (!menuOpen) return;
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === 'Escape') {
-        setMenuOpen(false)
-        menuButtonRef.current?.focus()
+        setMenuOpen(false);
+        menuButtonRef.current?.focus();
       }
     }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [menuOpen])
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [menuOpen]);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--background)' }}>
-      <header className="sticky top-0 z-50" style={{ backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border)' }}>
+      <header
+        className="sticky top-0 z-50"
+        style={{ backgroundColor: 'var(--background)', borderBottom: '1px solid var(--border)' }}
+      >
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative w-10 h-10">
               <BlobSmall color="var(--primary)" className="absolute inset-0 w-full h-full" />
-              <span className="absolute inset-0 flex items-center justify-center text-white font-serif font-semibold text-sm">S</span>
+              <span className="absolute inset-0 flex items-center justify-center text-white font-serif font-semibold text-sm">
+                S
+              </span>
             </div>
             <div>
-              <div className="font-serif text-lg font-semibold leading-tight" style={{ color: 'var(--foreground)' }}>Serenova</div>
-              <div className="text-xs font-light tracking-widest uppercase" style={{ color: 'var(--muted-foreground)' }}>Wellness Spa</div>
+              <div
+                className="font-serif text-lg font-semibold leading-tight"
+                style={{ color: 'var(--foreground)' }}
+              >
+                Serenova
+              </div>
+              <div
+                className="text-xs font-light tracking-widest uppercase"
+                style={{ color: 'var(--muted-foreground)' }}
+              >
+                Wellness Spa
+              </div>
             </div>
           </Link>
 
@@ -53,7 +68,10 @@ export default function Layout() {
               >
                 {label}
                 {pathname === to && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-px rounded-full" style={{ backgroundColor: 'var(--primary)' }} />
+                  <span
+                    className="absolute -bottom-1 left-0 right-0 h-px rounded-full"
+                    style={{ backgroundColor: 'var(--primary)' }}
+                  />
                 )}
               </Link>
             ))}
@@ -76,15 +94,35 @@ export default function Layout() {
             aria-controls="mobile-navigation"
             style={{ color: 'var(--foreground)' }}
           >
-            <div className="w-5 h-0.5 mb-1.5 transition-all duration-300 ease-in-out" style={{ backgroundColor: 'currentColor', transform: menuOpen ? 'rotate(45deg) translateY(14px)' : '' }} />
-            <div className="w-5 h-0.5 mb-1.5 transition-all duration-300 ease-in-out" style={{ backgroundColor: 'currentColor', opacity: menuOpen ? 0 : 1 }} />
-            <div className="w-5 h-0.5 transition-all duration-300 ease-in-out" style={{ backgroundColor: 'currentColor', transform: menuOpen ? 'rotate(-45deg) translateY(-14px)' : '' }} />
+            <div
+              className="w-5 h-0.5 mb-1.5 transition-all duration-300 ease-in-out"
+              style={{
+                backgroundColor: 'currentColor',
+                transform: menuOpen ? 'rotate(45deg) translateY(14px)' : '',
+              }}
+            />
+            <div
+              className="w-5 h-0.5 mb-1.5 transition-all duration-300 ease-in-out"
+              style={{ backgroundColor: 'currentColor', opacity: menuOpen ? 0 : 1 }}
+            />
+            <div
+              className="w-5 h-0.5 transition-all duration-300 ease-in-out"
+              style={{
+                backgroundColor: 'currentColor',
+                transform: menuOpen ? 'rotate(-45deg) translateY(-14px)' : '',
+              }}
+            />
           </button>
         </div>
 
         {/* Mobile menu */}
         {menuOpen && (
-          <nav id="mobile-navigation" aria-label="Mobile navigation" className="md:hidden px-6 pb-4 flex flex-col gap-3" style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}>
+          <nav
+            id="mobile-navigation"
+            aria-label="Mobile navigation"
+            className="md:hidden px-6 pb-4 flex flex-col gap-3"
+            style={{ borderTop: '1px solid var(--border)', paddingTop: '1rem' }}
+          >
             {navLinks.map(({ to, label }) => (
               <Link
                 key={to}
@@ -107,28 +145,55 @@ export default function Layout() {
       <footer style={{ backgroundColor: 'var(--card)', borderTop: '1px solid var(--border)' }}>
         <div className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="font-serif text-xl font-semibold mb-2" style={{ color: 'var(--foreground)' }}>Serenova Wellness Spa</div>
+            <div
+              className="font-serif text-xl font-semibold mb-2"
+              style={{ color: 'var(--foreground)' }}
+            >
+              Serenova Wellness Spa
+            </div>
             <p className="text-sm leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
               A sanctuary for rest, renewal, and gentle healing nestled in the heart of the forest.
             </p>
           </div>
           <div>
-            <div className="font-semibold text-sm tracking-widest uppercase mb-4" style={{ color: 'var(--muted-foreground)' }}>Pages</div>
+            <div
+              className="font-semibold text-sm tracking-widest uppercase mb-4"
+              style={{ color: 'var(--muted-foreground)' }}
+            >
+              Pages
+            </div>
             <div className="flex flex-col gap-2">
               {navLinks.map(({ to, label }) => (
-                <Link key={to} to={to} className="text-sm hover:underline" style={{ color: 'var(--foreground)' }}>{label}</Link>
+                <Link
+                  key={to}
+                  to={to}
+                  className="text-sm hover:underline"
+                  style={{ color: 'var(--foreground)' }}
+                >
+                  {label}
+                </Link>
               ))}
             </div>
           </div>
           <div>
-            <div className="font-semibold text-sm tracking-widest uppercase mb-4" style={{ color: 'var(--muted-foreground)' }}>Hours</div>
+            <div
+              className="font-semibold text-sm tracking-widest uppercase mb-4"
+              style={{ color: 'var(--muted-foreground)' }}
+            >
+              Hours
+            </div>
             <div className="text-sm space-y-1" style={{ color: 'var(--foreground)' }}>
               <div>Mon–Fri: 9am – 7pm</div>
               <div>Saturday: 9am – 5pm</div>
               <div>Sunday: 10am – 4pm</div>
             </div>
             <div className="mt-5">
-              <div className="font-semibold text-sm tracking-widest uppercase mb-2" style={{ color: 'var(--muted-foreground)' }}>Address</div>
+              <div
+                className="font-semibold text-sm tracking-widest uppercase mb-2"
+                style={{ color: 'var(--muted-foreground)' }}
+              >
+                Address
+              </div>
               <a
                 href="https://www.google.com/maps/search/?api=1&query=44.483303%2C-124.082885"
                 target="_blank"
@@ -136,15 +201,20 @@ export default function Layout() {
                 className="text-sm underline underline-offset-2"
                 style={{ color: 'var(--foreground)' }}
               >
-                End of NW Quail St<br/>Seal Rock, OR
+                End of NW Quail St
+                <br />
+                Seal Rock, OR
               </a>
             </div>
           </div>
         </div>
-        <div className="text-center py-4 text-xs" style={{ color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)' }}>
+        <div
+          className="text-center py-4 text-xs"
+          style={{ color: 'var(--muted-foreground)', borderTop: '1px solid var(--border)' }}
+        >
           © 2026 Serenova Wellness Spa. All rights reserved.
         </div>
       </footer>
     </div>
-  )
+  );
 }

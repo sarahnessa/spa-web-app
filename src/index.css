@@ -22,20 +22,20 @@
 }
 
 :root {
-  --background: #F5F1EA;
-  --foreground: #3A3028;
-  --card: #EDE7DA;
-  --card-foreground: #3A3028;
-  --primary: #6BA5A0;
-  --primary-foreground: #FFFFFF;
-  --secondary: #B8C8E8;
-  --secondary-foreground: #2E3A5C;
-  --muted: #E4DDD2;
-  --muted-foreground: #7A6E63;
-  --accent: #C4B4D8;
-  --accent-foreground: #3A2E52;
-  --border: #D4CABC;
-  --ring: #8EAF86;
+  --background: #f5f1ea;
+  --foreground: #3a3028;
+  --card: #ede7da;
+  --card-foreground: #3a3028;
+  --primary: #6ba5a0;
+  --primary-foreground: #ffffff;
+  --secondary: #b8c8e8;
+  --secondary-foreground: #2e3a5c;
+  --muted: #e4ddd2;
+  --muted-foreground: #7a6e63;
+  --accent: #c4b4d8;
+  --accent-foreground: #3a2e52;
+  --border: #d4cabc;
+  --ring: #8eaf86;
   --radius: 1rem;
 }
 
@@ -47,7 +47,7 @@ body {
 }
 
 /* Keep a clear keyboard indicator on links, buttons, form fields, and editors. */
-:where(a, button, input, select, textarea, [contenteditable="true"], [tabindex]):focus-visible {
+:where(a, button, input, select, textarea, [contenteditable='true'], [tabindex]):focus-visible {
   outline: 3px solid #315f58;
   outline-offset: 3px;
 }

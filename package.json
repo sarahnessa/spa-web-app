@@ -4,14 +4,26 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "prettier --write",
+      "oxlint"
+    ],
+    "*.{json,css,md,html}": [
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build && cp dist/index.html dist/404.html",
-    "lint": "oxlint",
     "test": "vitest run",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "lint": "oxlint && npm run format:check",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
@@ -26,17 +38,19 @@
   "devDependencies": {
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.13",
-    "@types/jest-axe": "^3.5.9",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "gh-pages": "^6.3.0",
-    "jest-axe": "^11.0.0",
+    "husky": "^9.1.7",
     "jsdom": "^31.0.1",
+    "lint-staged": "^17.6.2",
     "oxlint": "^1.75.0",
+    "prettier": "^3.10.1",
     "typescript": "~6.0.2",
     "vite": "^8.2.0",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.1",
+    "vitest-axe": "^0.1.0"
   }
 }

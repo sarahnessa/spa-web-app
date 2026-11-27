@@ -1,94 +1,94 @@
-import { useEffect, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
-import { BlobGreen, BlobLilac, BlobBlue } from "../components/Blobs";
+import { useEffect, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { BlobGreen, BlobLilac, BlobBlue } from '../components/Blobs';
 
 const photos = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=400&h=300&fit=crop&auto=format",
-    alt: "Spa treatment room with soft candlelight and botanical arrangements",
-    category: "Spaces",
+      'https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=400&h=300&fit=crop&auto=format',
+    alt: 'Spa treatment room with soft candlelight and botanical arrangements',
+    category: 'Spaces',
   },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1634992186330-283b9da965a7?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1634992186330-283b9da965a7?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1634992186330-283b9da965a7?w=400&h=300&fit=crop&auto=format",
-    alt: "Warm herbal bowl with fresh botanicals for a wrap treatment",
-    category: "Treatments",
+      'https://images.unsplash.com/photo-1634992186330-283b9da965a7?w=400&h=300&fit=crop&auto=format',
+    alt: 'Warm herbal bowl with fresh botanicals for a wrap treatment',
+    category: 'Treatments',
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop&auto=format",
-    alt: "Facial treatment using botanical serums and gentle massage",
-    category: "Treatments",
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=400&h=300&fit=crop&auto=format',
+    alt: 'Facial treatment using botanical serums and gentle massage',
+    category: 'Treatments',
   },
   {
     id: 4,
-    src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&h=300&fit=crop&auto=format",
-    alt: "Serene spa waiting area with linen cushions and dried flowers",
-    category: "Spaces",
+      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400&h=300&fit=crop&auto=format',
+    alt: 'Serene spa waiting area with linen cushions and dried flowers',
+    category: 'Spaces',
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1565033624234-3fcd6717568a?w=400&h=300&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1565033624234-3fcd6717568a?w=400&h=300&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1565033624234-3fcd6717568a?w=400&h=300&fit=crop&auto=format",
-    alt: "Tinctures, massage oils, and apothecary on a wooden shelf",
-    category: "Botanicals",
+      'https://images.unsplash.com/photo-1565033624234-3fcd6717568a?w=400&h=300&fit=crop&auto=format',
+    alt: 'Tinctures, massage oils, and apothecary on a wooden shelf',
+    category: 'Botanicals',
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1755610146353-d22fe8083edb?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1755610146353-d22fe8083edb?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1755610146353-d22fe8083edb?w=400&h=300&fit=crop&auto=format",
-    alt: "Hot stone preparation for a hot stone massage treatment",
-    category: "Treatments",
+      'https://images.unsplash.com/photo-1755610146353-d22fe8083edb?w=400&h=300&fit=crop&auto=format',
+    alt: 'Hot stone preparation for a hot stone massage treatment',
+    category: 'Treatments',
   },
   {
     id: 7,
-    src: "https://images.unsplash.com/photo-1771979788833-561c832025c3?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1771979788833-561c832025c3?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1771979788833-561c832025c3?w=400&h=300&fit=crop&auto=format",
-    alt: "Bamboo forest path leading to the spa entrance",
-    category: "Nature",
+      'https://images.unsplash.com/photo-1771979788833-561c832025c3?w=400&h=300&fit=crop&auto=format',
+    alt: 'Bamboo forest path leading to the spa entrance',
+    category: 'Nature',
   },
   {
     id: 8,
-    src: "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=400&h=300&fit=crop&auto=format",
-    alt: "Meditation garden with moss-covered stones and gentle water",
-    category: "Nature",
+      'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?w=400&h=300&fit=crop&auto=format',
+    alt: 'Meditation garden with moss-covered stones and gentle water',
+    category: 'Nature',
   },
   {
     id: 9,
-    src: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&h=300&fit=crop&auto=format",
-    alt: "Stone bathtub for after-treatment release and relaxation",
-    category: "Spaces",
+      'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&h=300&fit=crop&auto=format',
+    alt: 'Stone bathtub for after-treatment release and relaxation',
+    category: 'Spaces',
   },
   {
     id: 10,
-    src: "https://images.unsplash.com/photo-1585815157396-ad62043f721b?w=700&h=520&fit=crop&auto=format",
+    src: 'https://images.unsplash.com/photo-1585815157396-ad62043f721b?w=700&h=520&fit=crop&auto=format',
     thumb:
-      "https://images.unsplash.com/photo-1585815157396-ad62043f721b?w=400&h=300&fit=crop&auto=format",
-    alt: "Private hot coal sauna room with skylight",
-    category: "Spaces",
+      'https://images.unsplash.com/photo-1585815157396-ad62043f721b?w=400&h=300&fit=crop&auto=format',
+    alt: 'Private hot coal sauna room with skylight',
+    category: 'Spaces',
   },
 ];
 
-const categories = ["All", "Spaces", "Treatments", "Botanicals", "Nature"];
+const categories = ['All', 'Spaces', 'Treatments', 'Botanicals', 'Nature'];
 
 export default function Gallery() {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeCategory, setActiveCategory] = useState('All');
   const [lightbox, setLightbox] = useState<(typeof photos)[0] | null>(null);
   const lightboxRef = useRef<HTMLDivElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
@@ -96,17 +96,23 @@ export default function Gallery() {
   useEffect(() => {
     if (!lightbox) return;
     const dialog = lightboxRef.current;
-    const closeButton = dialog?.querySelector<HTMLButtonElement>("button[aria-label='Close image']");
+    const closeButton = dialog?.querySelector<HTMLButtonElement>(
+      "button[aria-label='Close image']",
+    );
     closeButton?.focus();
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key === 'Escape') {
         event.preventDefault();
         setLightbox(null);
         return;
       }
-      if (event.key !== "Tab" || !dialog) return;
-      const focusable = Array.from(dialog.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"));
+      if (event.key !== 'Tab' || !dialog) return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])",
+        ),
+      );
       if (!focusable.length) return;
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
@@ -118,17 +124,15 @@ export default function Gallery() {
         first.focus();
       }
     }
-    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener('keydown', handleKeyDown);
       openerRef.current?.focus();
     };
   }, [lightbox]);
 
   const filtered =
-    activeCategory === "All"
-      ? photos
-      : photos.filter((p) => p.category === activeCategory);
+    activeCategory === 'All' ? photos : photos.filter((p) => p.category === activeCategory);
 
   return (
     <>
@@ -151,22 +155,19 @@ export default function Gallery() {
           <div className="max-w-2xl mx-auto px-6">
             <p
               className="text-xs tracking-[0.3em] uppercase font-semibold mb-3"
-              style={{ color: "var(--primary)" }}
+              style={{ color: 'var(--primary)' }}
             >
               Our World
             </p>
             <h1
               className="font-serif text-5xl font-semibold mb-4"
-              style={{ color: "var(--foreground)" }}
+              style={{ color: 'var(--foreground)' }}
             >
               A glimpse inside
             </h1>
-            <p
-              className="text-base leading-relaxed"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              From our forest-side treatment rooms to the botanicals we grow
-              in-house — step into the world of Serenova.
+            <p className="text-base leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+              From our forest-side treatment rooms to the botanicals we grow in-house — step into
+              the world of Serenova.
             </p>
           </div>
         </section>
@@ -181,10 +182,8 @@ export default function Gallery() {
               aria-pressed={activeCategory === cat}
               className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-200"
               style={{
-                backgroundColor:
-                  activeCategory === cat ? "var(--primary)" : "var(--muted)",
-                color:
-                  activeCategory === cat ? "white" : "var(--muted-foreground)",
+                backgroundColor: activeCategory === cat ? 'var(--primary)' : 'var(--muted)',
+                color: activeCategory === cat ? 'white' : 'var(--muted-foreground)',
               }}
             >
               {cat}
@@ -201,8 +200,11 @@ export default function Gallery() {
                 type="button"
                 className="break-inside-avoid rounded-2xl overflow-hidden cursor-pointer group relative block w-full border-0 p-0 text-left"
                 aria-label={`View image: ${photo.alt}`}
-                onClick={(event) => { openerRef.current = event.currentTarget; setLightbox(photo); }}
-                style={{ backgroundColor: "var(--muted)" }}
+                onClick={(event) => {
+                  openerRef.current = event.currentTarget;
+                  setLightbox(photo);
+                }}
+                style={{ backgroundColor: 'var(--muted)' }}
               >
                 <img
                   src={photo.thumb}
@@ -212,8 +214,7 @@ export default function Gallery() {
                 <div
                   className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4"
                   style={{
-                    background:
-                      "linear-gradient(to top, rgba(58,48,40,0.55), transparent)",
+                    background: 'linear-gradient(to top, rgba(58,48,40,0.55), transparent)',
                   }}
                 >
                   <span className="text-white text-xs font-semibold tracking-wide">
@@ -224,10 +225,7 @@ export default function Gallery() {
             ))}
           </div>
           {filtered.length === 0 && (
-            <p
-              className="text-center py-16"
-              style={{ color: "var(--muted-foreground)" }}
-            >
+            <p className="text-center py-16" style={{ color: 'var(--muted-foreground)' }}>
               No images in this category yet.
             </p>
           )}
@@ -242,30 +240,25 @@ export default function Gallery() {
             aria-label={`Image preview: ${lightbox.alt}`}
             className="fixed inset-0 z-50 flex items-center justify-center p-6"
             style={{
-              backgroundColor: "rgba(30,22,18,0.85)",
-              backdropFilter: "blur(8px)",
+              backgroundColor: 'rgba(30,22,18,0.85)',
+              backdropFilter: 'blur(8px)',
             }}
             onClick={() => setLightbox(null)}
           >
-            <div
-              className="relative max-w-4xl w-full"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
               <img
                 src={lightbox.src}
                 alt={lightbox.alt}
                 className="w-full rounded-2xl object-cover"
-                style={{ maxHeight: "80vh" }}
+                style={{ maxHeight: '80vh' }}
               />
-              <p className="text-center mt-4 text-sm text-white opacity-80">
-                {lightbox.alt}
-              </p>
+              <p className="text-center mt-4 text-sm text-white opacity-80">{lightbox.alt}</p>
               <button
                 type="button"
                 aria-label="Close image"
                 onClick={() => setLightbox(null)}
                 className="absolute -top-4 -right-4 w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-lg"
-                style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
+                style={{ backgroundColor: 'var(--primary)', color: 'var(--foreground)' }}
               >
                 ×
               </button>

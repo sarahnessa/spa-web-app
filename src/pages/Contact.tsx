@@ -1,26 +1,26 @@
-import { useState } from "react";
-import { BlobGreen, BlobLilac, BlobBlue } from "../components/Blobs";
-import { Helmet } from "react-helmet-async";
+import { useState } from 'react';
+import { BlobGreen, BlobLilac, BlobBlue } from '../components/Blobs';
+import { Helmet } from 'react-helmet-async';
 
 export default function Contact() {
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
   });
   const [sent, setSent] = useState(false);
   const [mapReset, setMapReset] = useState(0);
 
   const mapSource =
-    "https://www.openstreetmap.org/export/embed.html?bbox=-124.112885%2C44.463303%2C-124.052885%2C44.503303&layer=mapnik&marker=44.483303%2C-124.082885";
+    'https://www.openstreetmap.org/export/embed.html?bbox=-124.112885%2C44.463303%2C-124.052885%2C44.503303&layer=mapnik&marker=44.483303%2C-124.082885';
 
   function update(field: keyof typeof form, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
   }
 
-  function submit({ preventDefault }: React.SubmitEvent): void {
-    preventDefault();
+  function submit(event: React.SubmitEvent<HTMLFormElement>): void {
+    event.preventDefault();
     setSent(true);
   }
 
@@ -45,22 +45,19 @@ export default function Contact() {
           <div className="max-w-2xl mx-auto px-6">
             <p
               className="text-sm tracking-[0.3em] uppercase font-semibold mb-3"
-              style={{ color: "var(--primary)" }}
+              style={{ color: 'var(--primary)' }}
             >
               Reach Out
             </p>
             <h1
               className="font-serif text-5xl font-semibold mb-4"
-              style={{ color: "var(--foreground)" }}
+              style={{ color: 'var(--foreground)' }}
             >
               We would love to hear from you
             </h1>
-            <p
-              className="text-lg leading-relaxed"
-              style={{ color: "var(--muted-foreground)" }}
-            >
-              Questions about treatments, gift vouchers, accessibility needs, or
-              just wanting to say hello — we are here.
+            <p className="text-lg leading-relaxed" style={{ color: 'var(--muted-foreground)' }}>
+              Questions about treatments, gift vouchers, accessibility needs, or just wanting to say
+              hello — we are here.
             </p>
           </div>
         </section>
@@ -72,7 +69,7 @@ export default function Contact() {
             <div className="space-y-6">
               <h2
                 className="font-serif text-3xl font-semibold"
-                style={{ color: "var(--foreground)" }}
+                style={{ color: 'var(--foreground)' }}
               >
                 Find us
               </h2>
@@ -99,8 +96,8 @@ export default function Contact() {
                       />
                     </svg>
                   ),
-                  label: "Address",
-                  lines: ["End of NW Quail St", "Seal Rock, OR"],
+                  label: 'Address',
+                  lines: ['End of NW Quail St', 'Seal Rock, OR'],
                 },
                 {
                   icon: (
@@ -119,8 +116,8 @@ export default function Contact() {
                       />
                     </svg>
                   ),
-                  label: "Phone",
-                  lines: ["+1 (541) 882-4730"],
+                  label: 'Phone',
+                  lines: ['+1 (541) 882-4730'],
                 },
                 {
                   icon: (
@@ -139,8 +136,8 @@ export default function Contact() {
                       />
                     </svg>
                   ),
-                  label: "Email",
-                  lines: ["hello@serenovaspa.com"],
+                  label: 'Email',
+                  lines: ['hello@serenovaspa.com'],
                 },
                 {
                   icon: (
@@ -159,20 +156,16 @@ export default function Contact() {
                       />
                     </svg>
                   ),
-                  label: "Hours",
-                  lines: [
-                    "Mon–Fri: 9am – 7pm",
-                    "Saturday: 9am – 5pm",
-                    "Sunday: 10am – 4pm",
-                  ],
+                  label: 'Hours',
+                  lines: ['Mon–Fri: 9am – 7pm', 'Saturday: 9am – 5pm', 'Sunday: 10am – 4pm'],
                 },
               ].map(({ icon, label, lines }) => (
                 <div key={label} className="flex gap-5 items-start">
                   <div
                     className="w-11 h-11 rounded-2xl flex items-center justify-center flex-shrink-0"
                     style={{
-                      backgroundColor: "#6BA5A035",
-                      color: "var(--primary)",
+                      backgroundColor: '#6BA5A035',
+                      color: 'var(--primary)',
                     }}
                   >
                     {icon}
@@ -180,19 +173,19 @@ export default function Contact() {
                   <div>
                     <div
                       className="text-xs font-bold tracking-widest uppercase mb-1.5"
-                      style={{ color: "var(--muted-foreground)" }}
+                      style={{ color: 'var(--muted-foreground)' }}
                     >
                       {label}
                     </div>
-                    {lines.map((l) => (
-                      label === "Address" ? (
+                    {lines.map((l) =>
+                      label === 'Address' ? (
                         <a
                           key={l}
                           href="https://www.google.com/maps/search/?api=1&query=44.483303%2C-124.082885"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="block text-base font-medium underline underline-offset-2"
-                          style={{ color: "var(--foreground)" }}
+                          style={{ color: 'var(--foreground)' }}
                         >
                           {l}
                         </a>
@@ -200,12 +193,12 @@ export default function Contact() {
                         <div
                           key={l}
                           className="text-base font-medium"
-                          style={{ color: "var(--foreground)" }}
+                          style={{ color: 'var(--foreground)' }}
                         >
                           {l}
                         </div>
-                      )
-                    ))}
+                      ),
+                    )}
                   </div>
                 </div>
               ))}
@@ -215,13 +208,13 @@ export default function Contact() {
             <div>
               <h3
                 className="font-serif text-3xl font-semibold mb-6"
-                style={{ color: "var(--foreground)" }}
+                style={{ color: 'var(--foreground)' }}
               >
                 Directions
               </h3>
               <div
                 className="rounded-2xl overflow-hidden relative shadow-lg"
-                style={{ border: "2px solid var(--border)" }}
+                style={{ border: '2px solid var(--border)' }}
               >
                 <iframe
                   key={mapReset}
@@ -229,9 +222,9 @@ export default function Contact() {
                   src={mapSource}
                   className="w-full"
                   style={{
-                    height: "320px",
-                    border: "none",
-                    filter: "saturate(0.72) sepia(0.08)",
+                    height: '320px',
+                    border: 'none',
+                    filter: 'saturate(0.72) sepia(0.08)',
                   }}
                   loading="lazy"
                 />
@@ -240,9 +233,9 @@ export default function Contact() {
                   onClick={() => setMapReset((reset) => reset + 1)}
                   className="absolute left-3 top-[76px] z-10 rounded-lg border px-3 py-2 text-xs font-semibold shadow-md transition-colors hover:opacity-90"
                   style={{
-                    backgroundColor: "var(--card)",
-                    borderColor: "var(--border)",
-                    color: "var(--foreground)",
+                    backgroundColor: 'var(--card)',
+                    borderColor: 'var(--border)',
+                    color: 'var(--foreground)',
                   }}
                   aria-label="Recenter map on the spa"
                 >
@@ -251,10 +244,10 @@ export default function Contact() {
               </div>
               <p
                 className="text-base mt-3 leading-relaxed"
-                style={{ color: "var(--muted-foreground)" }}
+                style={{ color: 'var(--muted-foreground)' }}
               >
-                Serenova Wellness Spa is located at the end of NW Quail St in
-                Seal Rock. Use the map pin for the location.
+                Serenova Wellness Spa is located at the end of NW Quail St in Seal Rock. Use the map
+                pin for the location.
               </p>
             </div>
           </div>
@@ -262,33 +255,27 @@ export default function Contact() {
 
         {/* Contact form */}
         <div className="max-w-6xl mx-auto px-6 pb-24">
-          <div
-            className="rounded-2xl p-10"
-            style={{ backgroundColor: "var(--card)" }}
-          >
+          <div className="rounded-2xl p-10" style={{ backgroundColor: 'var(--card)' }}>
             {sent ? (
               <div className="text-center py-14">
                 <div className="text-5xl mb-5">🌿</div>
                 <h3
                   className="font-serif text-3xl font-semibold mb-3"
-                  style={{ color: "var(--foreground)" }}
+                  style={{ color: 'var(--foreground)' }}
                 >
                   Message received
                 </h3>
-                <p
-                  className="text-lg"
-                  style={{ color: "var(--muted-foreground)" }}
-                >
-                  Thank you, {form.name}. We will be in touch at {form.email}{" "}
-                  within one business day.
+                <p className="text-lg" style={{ color: 'var(--muted-foreground)' }}>
+                  Thank you, {form.name}. We will be in touch at {form.email} within one business
+                  day.
                 </p>
                 <button
                   onClick={() => {
                     setSent(false);
-                    setForm({ name: "", email: "", subject: "", message: "" });
+                    setForm({ name: '', email: '', subject: '', message: '' });
                   }}
                   className="mt-8 px-8 py-3 rounded-full text-base font-semibold"
-                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
+                  style={{ backgroundColor: 'var(--primary)', color: 'var(--foreground)' }}
                 >
                   Send another message
                 </button>
@@ -297,7 +284,7 @@ export default function Contact() {
               <form onSubmit={submit} className="max-w-3xl mx-auto">
                 <h2
                   className="font-serif text-3xl font-semibold mb-8"
-                  style={{ color: "var(--foreground)" }}
+                  style={{ color: 'var(--foreground)' }}
                 >
                   Send us a message
                 </h2>
@@ -306,7 +293,7 @@ export default function Contact() {
                     <label
                       htmlFor="contact-name"
                       className="block text-sm font-bold mb-2"
-                      style={{ color: "var(--foreground)" }}
+                      style={{ color: 'var(--foreground)' }}
                     >
                       Your name
                     </label>
@@ -315,13 +302,13 @@ export default function Contact() {
                       required
                       type="text"
                       value={form.name}
-                      onChange={(e) => update("name", e.target.value)}
+                      onChange={(e) => update('name', e.target.value)}
                       placeholder="Rowan Birch"
                       className="w-full px-5 py-3.5 rounded-xl text-base outline-none border"
                       style={{
-                        backgroundColor: "var(--background)",
-                        color: "var(--foreground)",
-                        borderColor: "var(--border)",
+                        backgroundColor: 'var(--background)',
+                        color: 'var(--foreground)',
+                        borderColor: 'var(--border)',
                       }}
                     />
                   </div>
@@ -329,7 +316,7 @@ export default function Contact() {
                     <label
                       htmlFor="contact-email"
                       className="block text-sm font-bold mb-2"
-                      style={{ color: "var(--foreground)" }}
+                      style={{ color: 'var(--foreground)' }}
                     >
                       Email address
                     </label>
@@ -338,13 +325,13 @@ export default function Contact() {
                       required
                       type="email"
                       value={form.email}
-                      onChange={(e) => update("email", e.target.value)}
+                      onChange={(e) => update('email', e.target.value)}
                       placeholder="rowan@example.com"
                       className="w-full px-5 py-3.5 rounded-xl text-base outline-none border"
                       style={{
-                        backgroundColor: "var(--background)",
-                        color: "var(--foreground)",
-                        borderColor: "var(--border)",
+                        backgroundColor: 'var(--background)',
+                        color: 'var(--foreground)',
+                        borderColor: 'var(--border)',
                       }}
                     />
                   </div>
@@ -353,7 +340,7 @@ export default function Contact() {
                   <label
                     htmlFor="contact-subject"
                     className="block text-sm font-bold mb-2"
-                    style={{ color: "var(--foreground)" }}
+                    style={{ color: 'var(--foreground)' }}
                   >
                     Subject
                   </label>
@@ -361,14 +348,12 @@ export default function Contact() {
                     id="contact-subject"
                     required
                     value={form.subject}
-                    onChange={(e) => update("subject", e.target.value)}
+                    onChange={(e) => update('subject', e.target.value)}
                     className="w-full px-5 py-3.5 rounded-xl text-base outline-none border"
                     style={{
-                      backgroundColor: "var(--background)",
-                      color: form.subject
-                        ? "var(--foreground)"
-                        : "var(--muted-foreground)",
-                      borderColor: "var(--border)",
+                      backgroundColor: 'var(--background)',
+                      color: form.subject ? 'var(--foreground)' : 'var(--muted-foreground)',
+                      borderColor: 'var(--border)',
                     }}
                   >
                     <option value="" disabled>
@@ -377,12 +362,8 @@ export default function Contact() {
                     <option value="General enquiry">General enquiry</option>
                     <option value="Booking help">Booking help</option>
                     <option value="Gift vouchers">Gift vouchers</option>
-                    <option value="Accessibility">
-                      Accessibility & special requirements
-                    </option>
-                    <option value="Corporate wellness">
-                      Corporate wellness packages
-                    </option>
+                    <option value="Accessibility">Accessibility & special requirements</option>
+                    <option value="Corporate wellness">Corporate wellness packages</option>
                     <option value="Other">Other</option>
                   </select>
                 </div>
@@ -390,7 +371,7 @@ export default function Contact() {
                   <label
                     htmlFor="contact-message"
                     className="block text-sm font-bold mb-2"
-                    style={{ color: "var(--foreground)" }}
+                    style={{ color: 'var(--foreground)' }}
                   >
                     Message
                   </label>
@@ -398,21 +379,21 @@ export default function Contact() {
                     id="contact-message"
                     required
                     value={form.message}
-                    onChange={(e) => update("message", e.target.value)}
+                    onChange={(e) => update('message', e.target.value)}
                     rows={6}
                     placeholder="Tell us what is on your mind…"
                     className="w-full px-5 py-3.5 rounded-xl text-base outline-none border resize-none"
                     style={{
-                      backgroundColor: "var(--background)",
-                      color: "var(--foreground)",
-                      borderColor: "var(--border)",
+                      backgroundColor: 'var(--background)',
+                      color: 'var(--foreground)',
+                      borderColor: 'var(--border)',
                     }}
                   />
                 </div>
                 <button
                   type="submit"
                   className="w-full py-4 rounded-full font-bold text-base transition-all duration-200 hover:opacity-90"
-                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
+                  style={{ backgroundColor: 'var(--primary)', color: 'var(--foreground)' }}
                 >
                   Send Message
                 </button>

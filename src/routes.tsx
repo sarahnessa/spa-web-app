@@ -1,27 +1,30 @@
-import { createBrowserRouter } from 'react-router'
-import Layout from './components/Layout'
-import Home from './pages/Home'
-import About from './pages/About'
-import Booking from './pages/Booking'
-import Gallery from './pages/Gallery'
-import Contact from './pages/Contact'
-import Admin from './pages/Admin'
-import MedicalIntake from './pages/MedicalIntake'
+import { createBrowserRouter } from 'react-router';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import About from './pages/About';
+import Booking from './pages/Booking';
+import Gallery from './pages/Gallery';
+import Contact from './pages/Contact';
+import Admin from './pages/Admin';
+import MedicalIntake from './pages/MedicalIntake';
 
-export const router = createBrowserRouter([
-  { path: '/admin', Component: Admin },
+export const router = createBrowserRouter(
+  [
+    { path: '/admin', Component: Admin },
+    {
+      path: '/',
+      Component: Layout,
+      children: [
+        { index: true, Component: Home },
+        { path: 'about', Component: About },
+        { path: 'booking', Component: Booking },
+        { path: 'medical-intake', Component: MedicalIntake },
+        { path: 'gallery', Component: Gallery },
+        { path: 'contact', Component: Contact },
+      ],
+    },
+  ],
   {
-    path: '/',
-    Component: Layout,
-    children: [
-      { index: true, Component: Home },
-      { path: 'about', Component: About },
-      { path: 'booking', Component: Booking },
-      { path: 'medical-intake', Component: MedicalIntake },
-      { path: 'gallery', Component: Gallery },
-      { path: 'contact', Component: Contact },
-    ]
+    basename: import.meta.env.BASE_URL.replace(/\/$/, ''),
   },
-], {
-    basename: import.meta.env.BASE_URL.replace(/\/$/, '')
-});
+);

@@ -1,12 +1,6 @@
-import { Link } from "react-router";
-import { Helmet } from "react-helmet-async";
-import {
-  BlobGreen,
-  BlobLilac,
-  BlobBlue,
-  CloudShape,
-  BlobSmall,
-} from "../components/Blobs";
+import { Link } from 'react-router';
+import { Helmet } from 'react-helmet-async';
+import { BlobGreen, BlobLilac, BlobBlue, CloudShape, BlobSmall } from '../components/Blobs';
 
 function IconHerbalWrap() {
   return (
@@ -182,21 +176,9 @@ function IconAromatherapy() {
         fill="#7DB88A"
         opacity="0.28"
       />
-      <rect
-        x="32"
-        y="30"
-        width="16"
-        height="16"
-        rx="4"
-        fill="#98B8DA"
-        opacity="0.7"
-      />
+      <rect x="32" y="30" width="16" height="16" rx="4" fill="#98B8DA" opacity="0.7" />
       <ellipse cx="40" cy="30" rx="8" ry="4" fill="#6BA5A0" opacity="0.6" />
-      <path
-        d="M36,20 Q34,14,36,10 Q38,14,36,20"
-        fill="#7DB88A"
-        opacity="0.85"
-      />
+      <path d="M36,20 Q34,14,36,10 Q38,14,36,20" fill="#7DB88A" opacity="0.85" />
       <path
         d="M40,18 Q40,10,40,6"
         fill="none"
@@ -205,11 +187,7 @@ function IconAromatherapy() {
         strokeLinecap="round"
         opacity="0.8"
       />
-      <path
-        d="M44,20 Q46,14,44,10 Q42,14,44,20"
-        fill="#7DB88A"
-        opacity="0.85"
-      />
+      <path d="M44,20 Q46,14,44,10 Q42,14,44,20" fill="#7DB88A" opacity="0.85" />
       <path
         d="M28,24 Q22,20,18,24"
         fill="none"
@@ -241,21 +219,9 @@ function IconDeepTissue() {
         fill="#BBA8D4"
         opacity="0.28"
       />
-      <rect
-        x="14"
-        y="32"
-        width="52"
-        height="14"
-        rx="7"
-        fill="#D4C0E8"
-        opacity="0.6"
-      />
+      <rect x="14" y="32" width="52" height="14" rx="7" fill="#D4C0E8" opacity="0.6" />
       <ellipse cx="40" cy="28" rx="20" ry="9" fill="#BBA8D4" opacity="0.5" />
-      <path
-        d="M24,28 Q28,18,40,16 Q52,18,56,28"
-        fill="#C4B4D8"
-        opacity="0.55"
-      />
+      <path d="M24,28 Q28,18,40,16 Q52,18,56,28" fill="#C4B4D8" opacity="0.55" />
       <ellipse cx="28" cy="28" rx="5" ry="5" fill="#98B8DA" opacity="0.75" />
       <ellipse cx="52" cy="28" rx="5" ry="5" fill="#98B8DA" opacity="0.75" />
       <path d="M36,22 Q38,16,40,14 Q42,16,40,22" fill="#7DB88A" opacity="0.7" />
@@ -266,33 +232,33 @@ function IconDeepTissue() {
 const services = [
   {
     Icon: IconHerbalWrap,
-    title: "Herbal Body Wraps",
-    desc: "Envelop yourself in warm, botanical-infused wraps that draw out tension and nourish the skin.",
+    title: 'Herbal Body Wraps',
+    desc: 'Envelop yourself in warm, botanical-infused wraps that draw out tension and nourish the skin.',
   },
   {
     Icon: IconHotStone,
-    title: "Hot Stone Therapy",
-    desc: "Heated basalt stones melt deep muscle tension while grounding your energy to the earth.",
+    title: 'Hot Stone Therapy',
+    desc: 'Heated basalt stones melt deep muscle tension while grounding your energy to the earth.',
   },
   {
     Icon: IconFacial,
-    title: "Botanical Facials",
-    desc: "Plant-based formulas crafted with wildcrafted botanicals to restore your natural radiance.",
+    title: 'Botanical Facials',
+    desc: 'Plant-based formulas crafted with wildcrafted botanicals to restore your natural radiance.',
   },
   {
     Icon: IconMeditation,
-    title: "Guided Meditation",
-    desc: "One-on-one stillness sessions with our mindfulness practitioners to quiet the mind.",
+    title: 'Guided Meditation',
+    desc: 'One-on-one stillness sessions with our mindfulness practitioners to quiet the mind.',
   },
   {
     Icon: IconAromatherapy,
-    title: "Forest Aromatherapy",
-    desc: "Immerse your senses in pine, cedar, and eucalyptus to recalibrate and breathe fully.",
+    title: 'Forest Aromatherapy',
+    desc: 'Immerse your senses in pine, cedar, and eucalyptus to recalibrate and breathe fully.',
   },
   {
     Icon: IconDeepTissue,
-    title: "Restorative Deep Tissue",
-    desc: "Targeted therapeutic massage that releases chronic tension stored deep in the body.",
+    title: 'Restorative Deep Tissue',
+    desc: 'Targeted therapeutic massage that releases chronic tension stored deep in the body.',
   },
 ];
 
@@ -317,32 +283,32 @@ export default function Home() {
             <div>
               <p
                 className="text-xs tracking-[0.3em] uppercase font-semibold mb-6"
-                style={{ color: "var(--primary)" }}
+                style={{ color: 'var(--primary)' }}
               >
                 A Forest Sanctuary
               </p>
               <h1
                 className="font-serif text-5xl md:text-6xl font-semibold leading-tight mb-8"
-                style={{ color: "var(--foreground)" }}
+                style={{ color: 'var(--foreground)' }}
               >
                 Restore your
                 <br />
-                <em className="not-italic" style={{ color: "var(--primary)" }}>
+                <em className="not-italic" style={{ color: 'var(--primary)' }}>
                   natural stillness
                 </em>
               </h1>
               <p
                 className="text-lg leading-relaxed mb-10 max-w-md"
-                style={{ color: "var(--muted-foreground)" }}
+                style={{ color: 'var(--muted-foreground)' }}
               >
-                Serenova is a sanctuary where forest botanicals, gentle touch,
-                and unhurried time work together to return you to yourself.
+                Serenova is a sanctuary where forest botanicals, gentle touch, and unhurried time
+                work together to return you to yourself.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   to="/booking"
                   className="px-8 py-3.5 rounded-full font-semibold text-sm transition-all duration-200 hover:opacity-90 hover:scale-105"
-                  style={{ backgroundColor: "var(--primary)", color: "var(--foreground)" }}
+                  style={{ backgroundColor: 'var(--primary)', color: 'var(--foreground)' }}
                 >
                   Book a Session
                 </Link>
@@ -350,8 +316,8 @@ export default function Home() {
                   to="/about"
                   className="px-8 py-3.5 rounded-full font-semibold text-sm transition-all duration-200 border-2 hover:bg-card"
                   style={{
-                    borderColor: "var(--border)",
-                    color: "var(--foreground)",
+                    borderColor: 'var(--border)',
+                    color: 'var(--foreground)',
                   }}
                 >
                   Meet Our Team
@@ -368,8 +334,7 @@ export default function Home() {
                 <div
                   className="absolute inset-0"
                   style={{
-                    background:
-                      "linear-gradient(to bottom, transparent 60%, rgba(58,48,40,0.25))",
+                    background: 'linear-gradient(to bottom, transparent 60%, rgba(58,48,40,0.25))',
                   }}
                 />
               </div>
@@ -391,22 +356,19 @@ export default function Home() {
         </div>
 
         {/* Services */}
-        <section
-          className="py-24 relative"
-          style={{ backgroundColor: "var(--card)" }}
-        >
+        <section className="py-24 relative" style={{ backgroundColor: 'var(--card)' }}>
           <BlobBlue className="absolute -right-20 top-10 w-72 h-72 pointer-events-none opacity-50" />
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <p
                 className="text-xs tracking-[0.3em] uppercase font-semibold mb-3"
-                style={{ color: "var(--accent-foreground)" }}
+                style={{ color: 'var(--accent-foreground)' }}
               >
                 Our Offerings
               </p>
               <h2
                 className="font-serif text-4xl font-semibold"
-                style={{ color: "var(--foreground)" }}
+                style={{ color: 'var(--foreground)' }}
               >
                 Treatments designed for deep rest
               </h2>
@@ -416,20 +378,20 @@ export default function Home() {
                 <div
                   key={s.title}
                   className="rounded-2xl p-7 transition-all duration-300 hover:scale-[1.02] hover:shadow-md group"
-                  style={{ backgroundColor: "var(--background)" }}
+                  style={{ backgroundColor: 'var(--background)' }}
                 >
                   <div className="mb-4">
                     <s.Icon />
                   </div>
                   <h3
                     className="font-serif text-xl font-semibold mb-2"
-                    style={{ color: "var(--foreground)" }}
+                    style={{ color: 'var(--foreground)' }}
                   >
                     {s.title}
                   </h3>
                   <p
                     className="text-sm leading-relaxed"
-                    style={{ color: "var(--muted-foreground)" }}
+                    style={{ color: 'var(--muted-foreground)' }}
                   >
                     {s.desc}
                   </p>
@@ -446,14 +408,13 @@ export default function Home() {
           <div className="relative max-w-3xl mx-auto px-6 text-center">
             <p
               className="font-serif text-3xl md:text-4xl italic leading-relaxed"
-              style={{ color: "var(--foreground)" }}
+              style={{ color: 'var(--foreground)' }}
             >
-              "Within the stillness of the forest, the body remembers how to
-              heal."
+              "Within the stillness of the forest, the body remembers how to heal."
             </p>
             <p
               className="mt-6 text-sm tracking-widest uppercase"
-              style={{ color: "var(--muted-foreground)" }}
+              style={{ color: 'var(--muted-foreground)' }}
             >
               — Serenova Philosophy
             </p>
@@ -461,22 +422,16 @@ export default function Home() {
         </section>
 
         {/* CTA banner */}
-        <section
-          className="py-20"
-          style={{ backgroundColor: "var(--primary)" }}
-        >
+        <section className="py-20" style={{ backgroundColor: 'var(--primary)' }}>
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="font-serif text-4xl font-semibold mb-4 text-white">
-              Ready to begin?
-            </h2>
+            <h2 className="font-serif text-4xl font-semibold mb-4 text-white">Ready to begin?</h2>
             <p className="text-base mb-8 opacity-90 text-white">
-              Reserve your session today and take the first step back to
-              yourself.
+              Reserve your session today and take the first step back to yourself.
             </p>
             <Link
               to="/booking"
               className="inline-block px-10 py-4 rounded-full font-semibold text-sm transition-all duration-200 hover:opacity-90 hover:scale-105"
-              style={{ backgroundColor: "white", color: "var(--primary)" }}
+              style={{ backgroundColor: 'white', color: 'var(--primary)' }}
             >
               Book Your Session
             </Link>
